@@ -242,7 +242,7 @@ export default function Hero({ index, setIndex }) {
             color: '#111',
           }}
         >
-          Alaa
+          nsr
           <br />
           Suliman
         </h1>
