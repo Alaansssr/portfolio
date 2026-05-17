@@ -242,7 +242,7 @@ export default function Hero({ index, setIndex }) {
             color: '#111',
           }}
         >
-          nsr
+          Alaa
           <br />
           Suliman
         </h1>
@@ -257,9 +257,7 @@ export default function Hero({ index, setIndex }) {
             maxWidth: '300px',
           }}
         >
-          UX/UI Designer specializing in 3D,
-          interactive design, and gamified
-          digital experiences.
+          UX/UI Designer with a focus on UX research, user testing, 3D, and interactive digital experiences.
         </p>
 
         <div
