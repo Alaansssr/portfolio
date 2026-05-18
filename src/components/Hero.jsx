@@ -1,4 +1,5 @@
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
+import { Suspense } from 'react'
 import { useGLTF } from '@react-three/drei'
 import { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
@@ -206,7 +207,9 @@ export default function Hero({ index, setIndex }) {
         <ambientLight intensity={1.8} />
         <directionalLight position={[5, 5, 5]} intensity={1.2} />
 
-        <Strip index={index} setIndex={setIndex} />
+        <Suspense fallback={null}>
+  <Strip index={index} setIndex={setIndex} />
+</Suspense>
         <Camera />
       </Canvas>
 
@@ -324,7 +327,3 @@ export default function Hero({ index, setIndex }) {
     </section>
   )
 }
-
-useGLTF.preload('/models/project1.glb')
-useGLTF.preload('/models/project2.glb')
-useGLTF.preload('/models/project3.glb')
