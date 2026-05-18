@@ -1,5 +1,5 @@
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { useGLTF } from '@react-three/drei'
+import { useGLTF, useProgress } from '@react-three/drei'
 import { Suspense, useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { projects } from '../data/projects'
@@ -180,6 +180,9 @@ export default function Hero({ index, setIndex }) {
 
   const activeProject = projects[displayIndex]
 
+  const { progress } = useProgress()
+  const isLoadingModels = progress < 100
+
   useEffect(() => {
     if (displayIndex === index) return
 
@@ -289,33 +292,35 @@ export default function Hero({ index, setIndex }) {
       </div>
 
       {/* PLACEHOLDER ICONS WHILE 3D LOADS */}
-      <div
-        style={{
-          position: 'absolute',
-          left: '60%',
-          top: '44%',
-          transform: 'translate(-50%, -50%)',
-          zIndex: 5,
-          display: 'flex',
-          gap: '70px',
-          alignItems: 'center',
-          pointerEvents: 'none',
-        }}
-      >
-        {[0, 1, 2].map((item) => (
-          <div
-            key={item}
-            style={{
-              width: item === 0 ? 90 : 110,
-              height: item === 0 ? 90 : 110,
-              borderRadius: '24px',
-              background: '#f1f1f1',
-              boxShadow: '0 20px 60px rgba(0,0,0,0.08)',
-              animation: 'pulse 1.5s infinite ease-in-out',
-            }}
-          />
-        ))}
-      </div>
+      {isLoadingModels && (
+        <div
+          style={{
+            position: 'absolute',
+            left: '60%',
+            top: '44%',
+            transform: 'translate(-50%, -50%)',
+            zIndex: 5,
+            display: 'flex',
+            gap: '70px',
+            alignItems: 'center',
+            pointerEvents: 'none',
+          }}
+        >
+          {[0, 1, 2].map((item) => (
+            <div
+              key={item}
+              style={{
+                width: item === 0 ? 90 : 110,
+                height: item === 0 ? 90 : 110,
+                borderRadius: '24px',
+                background: '#f1f1f1',
+                boxShadow: '0 20px 60px rgba(0,0,0,0.08)',
+                animation: 'pulse 1.5s infinite ease-in-out',
+              }}
+            />
+          ))}
+        </div>
+      )}
 
       {/* PROJECT TITLE */}
       <div

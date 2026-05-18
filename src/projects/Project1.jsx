@@ -18,7 +18,7 @@ export default function Project1() {
 
   const indicatorImageStyle = {
     flex: '0 0 160px', // width
-    height: 55, // height
+    height: 110, // height
     margin: '0 0 20px 0',
     borderRadius: 20,
   }
