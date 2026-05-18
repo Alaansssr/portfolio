@@ -1,5 +1,5 @@
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { useGLTF, useProgress } from '@react-three/drei'
+import { useGLTF } from '@react-three/drei'
 import { Suspense, useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { projects } from '../data/projects'
@@ -48,10 +48,12 @@ function ProjectModel({
   const handlePointerDown = (e) => {
     e.stopPropagation()
     isDragging.current = true
+
     lastPointer.current = {
       x: e.clientX,
       y: e.clientY,
     }
+
     e.target.setPointerCapture(e.pointerId)
   }
 
@@ -104,6 +106,49 @@ function PlaceholderModel({ isActive = false }) {
   )
 }
 
+function ModelByType({ p, isActive }) {
+  if (p.type === 'box') {
+    return (
+      <ProjectModel
+        path="/models/project1.glb"
+        scale={0.1}
+        position={[0, 0, 0]}
+        rotationOffset={[0, 0, 0]}
+        opacity={isActive ? 1 : 0.2}
+        isActive={isActive}
+      />
+    )
+  }
+
+  if (p.type === 'sphere') {
+    return (
+      <ProjectModel
+        path="/models/project2.glb"
+        scale={1}
+        position={[0, 0.4, 0]}
+        rotationOffset={[-0.1, 0, 0]}
+        opacity={isActive ? 1 : 0.2}
+        isActive={isActive}
+      />
+    )
+  }
+
+  if (p.type === 'cone') {
+    return (
+      <ProjectModel
+        path="/models/project3.glb"
+        scale={1}
+        position={[0, 0.4, 0]}
+        rotationOffset={[-0.1, 1, 0]}
+        opacity={isActive ? 1 : 0.2}
+        isActive={isActive}
+      />
+    )
+  }
+
+  return null
+}
+
 function Strip({ index, setIndex, loadedModels }) {
   const ref = useRef()
   const spacing = 6
@@ -138,39 +183,12 @@ function Strip({ index, setIndex, loadedModels }) {
               document.body.style.cursor = 'default'
             }}
           >
-            {!shouldLoadModel && <PlaceholderModel isActive={isActive} />}
-
-            {shouldLoadModel && p.type === 'box' && (
-              <ProjectModel
-                path="/models/project1.glb"
-                scale={0.1}
-                position={[0, 0, 0]}
-                rotationOffset={[0, 0, 0]}
-                opacity={isActive ? 1 : 0.2}
-                isActive={isActive}
-              />
-            )}
-
-            {shouldLoadModel && p.type === 'sphere' && (
-              <ProjectModel
-                path="/models/project2.glb"
-                scale={1}
-                position={[0, 0.4, 0]}
-                rotationOffset={[-0.1, 0, 0]}
-                opacity={isActive ? 1 : 0.2}
-                isActive={isActive}
-              />
-            )}
-
-            {shouldLoadModel && p.type === 'cone' && (
-              <ProjectModel
-                path="/models/project3.glb"
-                scale={1}
-                position={[0, 0.4, 0]}
-                rotationOffset={[-0.1, 1, 0]}
-                opacity={isActive ? 1 : 0.2}
-                isActive={isActive}
-              />
+            {shouldLoadModel ? (
+              <Suspense fallback={<PlaceholderModel isActive={isActive} />}>
+                <ModelByType p={p} isActive={isActive} />
+              </Suspense>
+            ) : (
+              <PlaceholderModel isActive={isActive} />
             )}
           </group>
         )
@@ -194,32 +212,34 @@ export default function Hero({ index, setIndex }) {
   const [displayIndex, setDisplayIndex] = useState(index)
   const [isTransitioning, setIsTransitioning] = useState(false)
 
-  // Load only the active model first
+  // Load only first/current model first
   const [loadedModels, setLoadedModels] = useState([index])
 
   const activeProject = projects[displayIndex]
 
-  const { progress } = useProgress()
-  const isLoadingModels = progress < 100
-
+  // Load clicked model immediately
   useEffect(() => {
-    if (loadedModels.includes(index)) return
+    setLoadedModels((prev) => {
+      if (prev.includes(index)) return prev
+      return [...prev, index]
+    })
+  }, [index])
 
-    setLoadedModels((prev) => [...prev, index])
-  }, [index, loadedModels])
-
+  // Load other models in background AFTER first model starts
   useEffect(() => {
     const timer1 = setTimeout(() => {
-      setLoadedModels((prev) =>
-        prev.includes(1) ? prev : [...prev, 1]
-      )
+      setLoadedModels((prev) => {
+        if (prev.includes(1)) return prev
+        return [...prev, 1]
+      })
     }, 2500)
 
     const timer2 = setTimeout(() => {
-      setLoadedModels((prev) =>
-        prev.includes(2) ? prev : [...prev, 2]
-      )
-    }, 4500)
+      setLoadedModels((prev) => {
+        if (prev.includes(2)) return prev
+        return [...prev, 2]
+      })
+    }, 5000)
 
     return () => {
       clearTimeout(timer1)
@@ -253,13 +273,11 @@ export default function Hero({ index, setIndex }) {
         <ambientLight intensity={1.8} />
         <directionalLight position={[5, 5, 5]} intensity={1.2} />
 
-        <Suspense fallback={null}>
-          <Strip
-            index={index}
-            setIndex={setIndex}
-            loadedModels={loadedModels}
-          />
-        </Suspense>
+        <Strip
+          index={index}
+          setIndex={setIndex}
+          loadedModels={loadedModels}
+        />
 
         <Camera />
       </Canvas>
@@ -338,37 +356,6 @@ export default function Hero({ index, setIndex }) {
           </a>
         </div>
       </div>
-
-      {/* 2D PLACEHOLDER WHILE MODELS LOAD */}
-      {isLoadingModels && (
-        <div
-          style={{
-            position: 'absolute',
-            left: '60%',
-            top: '44%',
-            transform: 'translate(-50%, -50%)',
-            zIndex: 5,
-            display: 'flex',
-            gap: '70px',
-            alignItems: 'center',
-            pointerEvents: 'none',
-          }}
-        >
-          {[0, 1, 2].map((item) => (
-            <div
-              key={item}
-              style={{
-                width: item === 0 ? 90 : 110,
-                height: item === 0 ? 90 : 110,
-                borderRadius: '24px',
-                background: '#f1f1f1',
-                boxShadow: '0 20px 60px rgba(0,0,0,0.08)',
-                animation: 'pulse 1.5s infinite ease-in-out',
-              }}
-            />
-          ))}
-        </div>
-      )}
 
       {/* PROJECT TITLE */}
       <div
