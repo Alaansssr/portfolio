@@ -91,7 +91,20 @@ function ProjectModel({
   )
 }
 
-function Strip({ index, setIndex }) {
+function PlaceholderModel({ isActive = false }) {
+  return (
+    <mesh scale={isActive ? 1.15 : 0.8}>
+      <boxGeometry args={[1.4, 1.4, 1.4]} />
+      <meshStandardMaterial
+        color="#eeeeee"
+        transparent
+        opacity={isActive ? 0.7 : 0.35}
+      />
+    </mesh>
+  )
+}
+
+function Strip({ index, setIndex, loadedModels }) {
   const ref = useRef()
   const spacing = 6
 
@@ -107,6 +120,7 @@ function Strip({ index, setIndex }) {
     <group ref={ref}>
       {projects.map((p, i) => {
         const isActive = i === index
+        const shouldLoadModel = loadedModels.includes(i)
 
         return (
           <group
@@ -124,7 +138,9 @@ function Strip({ index, setIndex }) {
               document.body.style.cursor = 'default'
             }}
           >
-            {p.type === 'box' && (
+            {!shouldLoadModel && <PlaceholderModel isActive={isActive} />}
+
+            {shouldLoadModel && p.type === 'box' && (
               <ProjectModel
                 path="/models/project1.glb"
                 scale={0.1}
@@ -135,7 +151,7 @@ function Strip({ index, setIndex }) {
               />
             )}
 
-            {p.type === 'sphere' && (
+            {shouldLoadModel && p.type === 'sphere' && (
               <ProjectModel
                 path="/models/project2.glb"
                 scale={1}
@@ -146,7 +162,7 @@ function Strip({ index, setIndex }) {
               />
             )}
 
-            {p.type === 'cone' && (
+            {shouldLoadModel && p.type === 'cone' && (
               <ProjectModel
                 path="/models/project3.glb"
                 scale={1}
@@ -178,10 +194,38 @@ export default function Hero({ index, setIndex }) {
   const [displayIndex, setDisplayIndex] = useState(index)
   const [isTransitioning, setIsTransitioning] = useState(false)
 
+  // Load only the active model first
+  const [loadedModels, setLoadedModels] = useState([index])
+
   const activeProject = projects[displayIndex]
 
   const { progress } = useProgress()
   const isLoadingModels = progress < 100
+
+  useEffect(() => {
+    if (loadedModels.includes(index)) return
+
+    setLoadedModels((prev) => [...prev, index])
+  }, [index, loadedModels])
+
+  useEffect(() => {
+    const timer1 = setTimeout(() => {
+      setLoadedModels((prev) =>
+        prev.includes(1) ? prev : [...prev, 1]
+      )
+    }, 2500)
+
+    const timer2 = setTimeout(() => {
+      setLoadedModels((prev) =>
+        prev.includes(2) ? prev : [...prev, 2]
+      )
+    }, 4500)
+
+    return () => {
+      clearTimeout(timer1)
+      clearTimeout(timer2)
+    }
+  }, [])
 
   useEffect(() => {
     if (displayIndex === index) return
@@ -205,12 +249,16 @@ export default function Hero({ index, setIndex }) {
         overflow: 'hidden',
       }}
     >
-      <Canvas>
+      <Canvas dpr={[1, 1.5]}>
         <ambientLight intensity={1.8} />
         <directionalLight position={[5, 5, 5]} intensity={1.2} />
 
         <Suspense fallback={null}>
-          <Strip index={index} setIndex={setIndex} />
+          <Strip
+            index={index}
+            setIndex={setIndex}
+            loadedModels={loadedModels}
+          />
         </Suspense>
 
         <Camera />
@@ -291,7 +339,7 @@ export default function Hero({ index, setIndex }) {
         </div>
       </div>
 
-      {/* PLACEHOLDER ICONS WHILE 3D LOADS */}
+      {/* 2D PLACEHOLDER WHILE MODELS LOAD */}
       {isLoadingModels && (
         <div
           style={{
