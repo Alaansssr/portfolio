@@ -37,8 +37,6 @@ function ProjectModel({
     if (!modelRef.current) return
 
     const t = clock.getElapsedTime()
-
-    // lighter + slower movement
     const idleShake = isActive ? Math.sin(t * 0.8) * 0.15 : 0
 
     modelRef.current.rotation.x = rotation.current.x + rotationOffset[0]
@@ -92,19 +90,6 @@ function ProjectModel({
     >
       <primitive object={scene} />
     </group>
-  )
-}
-
-function PlaceholderModel({ isActive = false }) {
-  return (
-    <mesh scale={isActive ? 1.15 : 0.8}>
-      <boxGeometry args={[1.4, 1.4, 1.4]} />
-      <meshStandardMaterial
-        color="#eeeeee"
-        transparent
-        opacity={isActive ? 0.7 : 0.35}
-      />
-    </mesh>
   )
 }
 
@@ -186,12 +171,10 @@ function Strip({ index, setIndex, loadedModels }) {
             }}
           >
             {shouldLoadModel ? (
-              <Suspense fallback={<PlaceholderModel isActive={isActive} />}>
+              <Suspense fallback={null}>
                 <ModelByType p={p} isActive={isActive} />
               </Suspense>
-            ) : (
-              <PlaceholderModel isActive={isActive} />
-            )}
+            ) : null}
           </group>
         )
       })}
@@ -217,6 +200,12 @@ export default function Hero({ index, setIndex }) {
   const [loadedModels, setLoadedModels] = useState([index])
 
   const activeProject = projects[displayIndex]
+
+  const backgroundColors = [
+    'radial-gradient(circle at 60% 45%, rgba(255,120,0,0.10), #fff 55%)',
+    'radial-gradient(circle at 60% 45%, rgba(0,150,255,0.10), #fff 55%)',
+    'radial-gradient(circle at 60% 45%, rgba(120,255,180,0.10), #fff 55%)',
+  ]
 
   useEffect(() => {
     setLoadedModels((prev) => {
@@ -264,8 +253,9 @@ export default function Hero({ index, setIndex }) {
       style={{
         height: '100vh',
         position: 'relative',
-        background: '#fff',
         overflow: 'hidden',
+        background: backgroundColors[displayIndex],
+        transition: 'background 1s ease',
       }}
     >
       <Canvas dpr={1}>
