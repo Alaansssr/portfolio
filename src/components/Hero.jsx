@@ -37,7 +37,9 @@ function ProjectModel({
     if (!modelRef.current) return
 
     const t = clock.getElapsedTime()
-    const idleShake = isActive ? Math.sin(t * 1.2) * 0.35 : 0
+
+    // lighter + slower movement
+    const idleShake = isActive ? Math.sin(t * 0.8) * 0.15 : 0
 
     modelRef.current.rotation.x = rotation.current.x + rotationOffset[0]
     modelRef.current.rotation.y =
@@ -212,12 +214,10 @@ export default function Hero({ index, setIndex }) {
   const [displayIndex, setDisplayIndex] = useState(index)
   const [isTransitioning, setIsTransitioning] = useState(false)
 
-  // Load only first/current model first
   const [loadedModels, setLoadedModels] = useState([index])
 
   const activeProject = projects[displayIndex]
 
-  // Load clicked model immediately
   useEffect(() => {
     setLoadedModels((prev) => {
       if (prev.includes(index)) return prev
@@ -225,21 +225,20 @@ export default function Hero({ index, setIndex }) {
     })
   }, [index])
 
-  // Load other models in background AFTER first model starts
   useEffect(() => {
     const timer1 = setTimeout(() => {
       setLoadedModels((prev) => {
         if (prev.includes(1)) return prev
         return [...prev, 1]
       })
-    }, 2500)
+    }, 7000)
 
     const timer2 = setTimeout(() => {
       setLoadedModels((prev) => {
         if (prev.includes(2)) return prev
         return [...prev, 2]
       })
-    }, 5000)
+    }, 12000)
 
     return () => {
       clearTimeout(timer1)
@@ -269,9 +268,9 @@ export default function Hero({ index, setIndex }) {
         overflow: 'hidden',
       }}
     >
-      <Canvas dpr={[1, 1.5]}>
-        <ambientLight intensity={1.8} />
-        <directionalLight position={[5, 5, 5]} intensity={1.2} />
+      <Canvas dpr={1}>
+        <ambientLight intensity={1.6} />
+        <directionalLight position={[5, 5, 5]} intensity={0.8} />
 
         <Strip
           index={index}
