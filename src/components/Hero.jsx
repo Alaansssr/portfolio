@@ -1,7 +1,6 @@
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { Suspense } from 'react'
 import { useGLTF } from '@react-three/drei'
-import { useEffect, useRef, useState } from 'react'
+import { Suspense, useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { projects } from '../data/projects'
 
@@ -208,8 +207,9 @@ export default function Hero({ index, setIndex }) {
         <directionalLight position={[5, 5, 5]} intensity={1.2} />
 
         <Suspense fallback={null}>
-  <Strip index={index} setIndex={setIndex} />
-</Suspense>
+          <Strip index={index} setIndex={setIndex} />
+        </Suspense>
+
         <Camera />
       </Canvas>
 
@@ -260,7 +260,8 @@ export default function Hero({ index, setIndex }) {
             maxWidth: '300px',
           }}
         >
-          UX/UI Designer with a focus on UX research, user testing, 3D, and interactive digital experiences.
+          UX/UI Designer with a focus on UX research, user testing,
+          3D, and interactive digital experiences.
         </p>
 
         <div
@@ -285,6 +286,35 @@ export default function Hero({ index, setIndex }) {
             Contact
           </a>
         </div>
+      </div>
+
+      {/* PLACEHOLDER ICONS WHILE 3D LOADS */}
+      <div
+        style={{
+          position: 'absolute',
+          left: '60%',
+          top: '44%',
+          transform: 'translate(-50%, -50%)',
+          zIndex: 5,
+          display: 'flex',
+          gap: '70px',
+          alignItems: 'center',
+          pointerEvents: 'none',
+        }}
+      >
+        {[0, 1, 2].map((item) => (
+          <div
+            key={item}
+            style={{
+              width: item === 0 ? 90 : 110,
+              height: item === 0 ? 90 : 110,
+              borderRadius: '24px',
+              background: '#f1f1f1',
+              boxShadow: '0 20px 60px rgba(0,0,0,0.08)',
+              animation: 'pulse 1.5s infinite ease-in-out',
+            }}
+          />
+        ))}
       </div>
 
       {/* PROJECT TITLE */}
