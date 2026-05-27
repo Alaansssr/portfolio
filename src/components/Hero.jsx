@@ -4,6 +4,24 @@ import { Suspense, useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { projects } from '../data/projects'
 
+function LoadingModel() {
+  const ref = useRef()
+
+  useFrame(({ clock }) => {
+    if (!ref.current) return
+    ref.current.rotation.y = clock.getElapsedTime() * 0.8
+  })
+
+  return (
+    <group ref={ref}>
+      <mesh>
+        <sphereGeometry args={[0.7, 32, 32]} />
+        <meshStandardMaterial color="#ddd" wireframe />
+      </mesh>
+    </group>
+  )
+}
+
 function ProjectModel({
   path,
   scale = 0.1,
@@ -171,7 +189,7 @@ function Strip({ index, setIndex, loadedModels }) {
             }}
           >
             {shouldLoadModel ? (
-              <Suspense fallback={null}>
+              <Suspense fallback={<LoadingModel />}>
                 <ModelByType p={p} isActive={isActive} />
               </Suspense>
             ) : null}
@@ -196,7 +214,6 @@ function Camera() {
 export default function Hero({ index, setIndex }) {
   const [displayIndex, setDisplayIndex] = useState(index)
   const [isTransitioning, setIsTransitioning] = useState(false)
-
   const [loadedModels, setLoadedModels] = useState([index])
 
   const activeProject = projects[displayIndex]
@@ -220,14 +237,14 @@ export default function Hero({ index, setIndex }) {
         if (prev.includes(1)) return prev
         return [...prev, 1]
       })
-    }, 7000)
+    }, 1500)
 
     const timer2 = setTimeout(() => {
       setLoadedModels((prev) => {
         if (prev.includes(2)) return prev
         return [...prev, 2]
       })
-    }, 12000)
+    }, 3000)
 
     return () => {
       clearTimeout(timer1)
@@ -271,7 +288,6 @@ export default function Hero({ index, setIndex }) {
         <Camera />
       </Canvas>
 
-      {/* PERSONAL INTRO */}
       <div
         style={{
           position: 'absolute',
@@ -314,7 +330,7 @@ export default function Hero({ index, setIndex }) {
             lineHeight: 1.7,
             color: '#555',
             marginTop: '24px',
-            marginBottom: '28px',
+            marginBottom: '14px',
             maxWidth: '300px',
           }}
         >
@@ -322,11 +338,17 @@ export default function Hero({ index, setIndex }) {
           3D, and interactive digital experiences.
         </p>
 
-        <div
+        <p
           style={{
-            marginTop: '32px',
+            fontSize: '14px',
+            color: '#999',
+            marginBottom: '28px',
           }}
         >
+          Loading interactive portfolio...
+        </p>
+
+        <div style={{ marginTop: '32px' }}>
           <a
             href="mailto:3la2suliman12345@gmail.com"
             style={{
@@ -346,7 +368,6 @@ export default function Hero({ index, setIndex }) {
         </div>
       </div>
 
-      {/* PROJECT TITLE */}
       <div
         style={{
           position: 'absolute',

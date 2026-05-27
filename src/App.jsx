@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import { Suspense, lazy, useEffect, useState } from 'react'
 import Hero from './components/Hero'
 import { projects } from './data/projects'
 
-import Project1 from './projects/Project1'
-import Project2 from './projects/Project2'
-import Project3 from './projects/Project3'
+const Project1 = lazy(() => import('./projects/Project1'))
+const Project2 = lazy(() => import('./projects/Project2'))
+const Project3 = lazy(() => import('./projects/Project3'))
 
 const projectComponents = {
   Project1,
@@ -14,9 +14,18 @@ const projectComponents = {
 
 export default function App() {
   const [index, setIndex] = useState(0)
+  const [loadProjectContent, setLoadProjectContent] = useState(false)
 
   const activeProject = projects[index]
   const ActiveProjectDetails = projectComponents[activeProject.Component]
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoadProjectContent(true)
+    }, 3000)
+
+    return () => clearTimeout(timer)
+  }, [])
 
   return (
     <main style={{ width: '100%', minHeight: '100vh' }}>
@@ -24,21 +33,28 @@ export default function App() {
       {/* HERO */}
       <Hero index={index} setIndex={setIndex} />
 
-      {/* DETAILS SECTION (WHITE) */}
-      <section
-        style={{
-          minHeight: '100vh',
-          padding: '1px 10%',
-          background: 'white',   // ✅ FIXED HERE
-          color: 'black',        // ✅ FIXED HERE
-          fontFamily: 'system-ui, sans-serif',
-        }}
-      >
-
-        {/* PROJECT CONTENT */}
-        <ActiveProjectDetails />
-
-      </section>
+      {/* DETAILS SECTION */}
+      {loadProjectContent && (
+        <section
+          style={{
+            minHeight: '100vh',
+            padding: '1px 10%',
+            background: 'white',
+            color: 'black',
+            fontFamily: 'system-ui, sans-serif',
+          }}
+        >
+          <Suspense
+            fallback={
+              <div style={{ padding: '80px 0', color: '#777' }}>
+                Loading project...
+              </div>
+            }
+          >
+            <ActiveProjectDetails />
+          </Suspense>
+        </section>
+      )}
 
     </main>
   )
