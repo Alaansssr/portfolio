@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useState } from 'react'
+import { Suspense, lazy, useState } from 'react'
 import Hero from './components/Hero'
 import { projects } from './data/projects'
 
@@ -14,48 +14,35 @@ const projectComponents = {
 
 export default function App() {
   const [index, setIndex] = useState(0)
-  const [loadProjectContent, setLoadProjectContent] = useState(false)
 
   const activeProject = projects[index]
   const ActiveProjectDetails = projectComponents[activeProject.Component]
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoadProjectContent(true)
-    }, 3000)
-
-    return () => clearTimeout(timer)
-  }, [])
-
   return (
     <main style={{ width: '100%', minHeight: '100vh' }}>
-
       {/* HERO */}
       <Hero index={index} setIndex={setIndex} />
 
       {/* DETAILS SECTION */}
-      {loadProjectContent && (
-        <section
-          style={{
-            minHeight: '100vh',
-            padding: '1px 10%',
-            background: 'white',
-            color: 'black',
-            fontFamily: 'system-ui, sans-serif',
-          }}
+      <section
+        style={{
+          minHeight: '100vh',
+          padding: '1px 10%',
+          background: 'white',
+          color: 'black',
+          fontFamily: 'system-ui, sans-serif',
+        }}
+      >
+        <Suspense
+          fallback={
+            <div style={{ padding: '80px 0', color: '#777' }}>
+              Loading project...
+            </div>
+          }
         >
-          <Suspense
-            fallback={
-              <div style={{ padding: '80px 0', color: '#777' }}>
-                Loading project...
-              </div>
-            }
-          >
-            <ActiveProjectDetails />
-          </Suspense>
-        </section>
-      )}
-
+          <ActiveProjectDetails />
+        </Suspense>
+      </section>
     </main>
   )
 }
