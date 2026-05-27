@@ -4,8 +4,6 @@ import { Suspense, useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { projects } from '../data/projects'
 
-useGLTF.preload('/models/project1.glb')
-
 function LoadingModel() {
   const ref = useRef()
 
@@ -60,12 +58,9 @@ function ProjectModel({
     const idleShake = isActive ? Math.sin(t * 0.8) * 0.15 : 0
 
     modelRef.current.rotation.x = rotation.current.x + rotationOffset[0]
-
     modelRef.current.rotation.y =
       rotation.current.y + rotationOffset[1] + idleShake
-
-    modelRef.current.rotation.z =
-      rotation.current.z + rotationOffset[2]
+    modelRef.current.rotation.z = rotation.current.z + rotationOffset[2]
   })
 
   const handlePointerDown = (e) => {
@@ -167,7 +162,6 @@ function Strip({ index, setIndex, loadedModels }) {
     if (!ref.current) return
 
     const targetX = -index * spacing
-
     ref.current.position.x +=
       (targetX - ref.current.position.x) * 0.08
   })
@@ -210,29 +204,17 @@ function Camera() {
   const { camera } = useThree()
 
   useFrame(() => {
-    camera.position.lerp(
-      new THREE.Vector3(0, 0, 6),
-      0.05
-    )
-
+    camera.position.lerp(new THREE.Vector3(0, 0, 6), 0.05)
     camera.lookAt(0, 0, 0)
   })
 
   return null
 }
 
-export default function Hero({
-  index,
-  setIndex,
-  projectReady,
-}) {
+export default function Hero({ index, setIndex }) {
   const [displayIndex, setDisplayIndex] = useState(index)
-
-  const [isTransitioning, setIsTransitioning] =
-    useState(false)
-
-  const [loadedModels, setLoadedModels] =
-    useState([index])
+  const [isTransitioning, setIsTransitioning] = useState(false)
+  const [loadedModels, setLoadedModels] = useState([index])
 
   const activeProject = projects[displayIndex]
 
@@ -262,7 +244,7 @@ export default function Hero({
         if (prev.includes(2)) return prev
         return [...prev, 2]
       })
-    }, 6000)
+    }, 3000)
 
     return () => {
       clearTimeout(timer1)
@@ -295,11 +277,7 @@ export default function Hero({
     >
       <Canvas dpr={1}>
         <ambientLight intensity={1.6} />
-
-        <directionalLight
-          position={[5, 5, 5]}
-          intensity={0.8}
-        />
+        <directionalLight position={[5, 5, 5]} intensity={0.8} />
 
         <Strip
           index={index}
@@ -356,9 +334,8 @@ export default function Hero({
             maxWidth: '300px',
           }}
         >
-          UX/UI Designer with a focus on UX
-          research, user testing, 3D, and
-          interactive digital experiences.
+          UX/UI Designer with a focus on UX research, user testing,
+          3D, and interactive digital experiences.
         </p>
 
         <div style={{ marginTop: '32px' }}>
@@ -378,18 +355,6 @@ export default function Hero({
           >
             Contact
           </a>
-
-          <p
-            style={{
-              marginTop: '18px',
-              fontSize: '14px',
-              color: '#888',
-            }}
-          >
-            {projectReady
-              ? 'Scroll to explore'
-              : 'Preparing project experience...'}
-          </p>
         </div>
       </div>
 

@@ -14,14 +14,14 @@ const projectComponents = {
 
 export default function App() {
   const [index, setIndex] = useState(0)
-  const [projectReady, setProjectReady] = useState(false)
+  const [loadProjectContent, setLoadProjectContent] = useState(false)
 
   const activeProject = projects[index]
   const ActiveProjectDetails = projectComponents[activeProject.Component]
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setProjectReady(true)
+      setLoadProjectContent(true)
     }, 3000)
 
     return () => clearTimeout(timer)
@@ -29,13 +29,12 @@ export default function App() {
 
   return (
     <main style={{ width: '100%', minHeight: '100vh' }}>
-      <Hero
-        index={index}
-        setIndex={setIndex}
-        projectReady={projectReady}
-      />
 
-      {projectReady && (
+      {/* HERO */}
+      <Hero index={index} setIndex={setIndex} />
+
+      {/* DETAILS SECTION */}
+      {loadProjectContent && (
         <section
           style={{
             minHeight: '100vh',
@@ -56,6 +55,7 @@ export default function App() {
           </Suspense>
         </section>
       )}
+
     </main>
   )
 }
