@@ -237,7 +237,7 @@ export default function Hero({ index, setIndex }) {
         if (prev.includes(1)) return prev
         return [...prev, 1]
       })
-    }, 1500)
+    }, 3000)
 
     const timer2 = setTimeout(() => {
       setLoadedModels((prev) => {
