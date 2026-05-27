@@ -338,16 +338,6 @@ export default function Hero({ index, setIndex }) {
           3D, and interactive digital experiences.
         </p>
 
-        <p
-          style={{
-            fontSize: '14px',
-            color: '#999',
-            marginBottom: '28px',
-          }}
-        >
-          Loading interactive portfolio...
-        </p>
-
         <div style={{ marginTop: '32px' }}>
           <a
             href="mailto:3la2suliman12345@gmail.com"
