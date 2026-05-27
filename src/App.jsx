@@ -14,27 +14,28 @@ const projectComponents = {
 
 export default function App() {
   const [index, setIndex] = useState(0)
-  const [loadProjectContent, setLoadProjectContent] = useState(false)
+  const [loadFirstProject, setLoadFirstProject] = useState(false)
 
   const activeProject = projects[index]
   const ActiveProjectDetails = projectComponents[activeProject.Component]
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setLoadProjectContent(true)
-    }, 3000)
+      setLoadFirstProject(true)
+    }, 2500)
 
     return () => clearTimeout(timer)
   }, [])
 
+  const shouldShowProject = index !== 0 || loadFirstProject
+
   return (
     <main style={{ width: '100%', minHeight: '100vh' }}>
-
       {/* HERO */}
       <Hero index={index} setIndex={setIndex} />
 
       {/* DETAILS SECTION */}
-      {loadProjectContent && (
+      {shouldShowProject && (
         <section
           style={{
             minHeight: '100vh',
@@ -55,7 +56,6 @@ export default function App() {
           </Suspense>
         </section>
       )}
-
     </main>
   )
 }
