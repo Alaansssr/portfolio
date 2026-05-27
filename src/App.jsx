@@ -31,10 +31,8 @@ export default function App() {
 
   return (
     <main style={{ width: '100%', minHeight: '100vh' }}>
-      {/* HERO */}
       <Hero index={index} setIndex={setIndex} />
 
-      {/* DETAILS SECTION */}
       {shouldShowProject && (
         <section
           style={{
