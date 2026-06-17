@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useState } from 'react'
+import { Suspense, lazy, useState } from 'react'
 import Hero from './components/Hero'
 import { projects } from './data/projects'
 
@@ -19,23 +19,22 @@ export default function App() {
   const activeProject = projects[index]
   const ActiveProjectDetails = projectComponents[activeProject.Component]
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoadProjectContent(true)
-    }, 3000)
-
-    return () => clearTimeout(timer)
-  }, [])
+  const handleSelectProject = (newIndex) => {
+    setIndex(newIndex)
+    setLoadProjectContent(false)
+  }
 
   return (
     <main style={{ width: '100%', minHeight: '100vh' }}>
+      <Hero
+        index={index}
+        setIndex={handleSelectProject}
+        onOpenProject={setLoadProjectContent}
+      />
 
-      {/* HERO */}
-      <Hero index={index} setIndex={setIndex} />
-
-      {/* DETAILS SECTION */}
       {loadProjectContent && (
         <section
+          id="project-content"
           style={{
             minHeight: '100vh',
             padding: '1px 10%',
@@ -55,7 +54,6 @@ export default function App() {
           </Suspense>
         </section>
       )}
-
     </main>
   )
 }

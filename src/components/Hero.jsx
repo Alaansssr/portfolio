@@ -119,7 +119,7 @@ function ModelByType({ p, isActive }) {
         scale={0.1}
         position={[0, 0, 0]}
         rotationOffset={[0, 0, 0]}
-        opacity={isActive ? 1 : 0.2}
+        opacity={isActive ? 1 : 0.25}
         isActive={isActive}
       />
     )
@@ -132,7 +132,7 @@ function ModelByType({ p, isActive }) {
         scale={1}
         position={[0, 0.4, 0]}
         rotationOffset={[-0.1, 0, 0]}
-        opacity={isActive ? 1 : 0.2}
+        opacity={isActive ? 1 : 0.25}
         isActive={isActive}
       />
     )
@@ -145,7 +145,7 @@ function ModelByType({ p, isActive }) {
         scale={1}
         position={[0, 0.4, 0]}
         rotationOffset={[-0.1, 1, 0]}
-        opacity={isActive ? 1 : 0.2}
+        opacity={isActive ? 1 : 0.25}
         isActive={isActive}
       />
     )
@@ -192,7 +192,9 @@ function Strip({ index, setIndex, loadedModels }) {
               <Suspense fallback={<LoadingModel />}>
                 <ModelByType p={p} isActive={isActive} />
               </Suspense>
-            ) : null}
+            ) : (
+              <LoadingModel />
+            )}
           </group>
         )
       })}
@@ -211,10 +213,12 @@ function Camera() {
   return null
 }
 
-export default function Hero({ index, setIndex }) {
+export default function Hero({ index, setIndex, onOpenProject }) {
   const [displayIndex, setDisplayIndex] = useState(index)
   const [isTransitioning, setIsTransitioning] = useState(false)
-  const [loadedModels, setLoadedModels] = useState([index])
+
+  // Load only first GLB immediately
+  const [loadedModels, setLoadedModels] = useState([0])
 
   const activeProject = projects[displayIndex]
 
@@ -224,27 +228,21 @@ export default function Hero({ index, setIndex }) {
     'radial-gradient(circle at 60% 45%, rgba(120,255,180,0.10), #fff 55%)',
   ]
 
-  useEffect(() => {
-    setLoadedModels((prev) => {
-      if (prev.includes(index)) return prev
-      return [...prev, index]
-    })
-  }, [index])
-
+  // Load the other icons AFTER the first screen is visible
   useEffect(() => {
     const timer1 = setTimeout(() => {
       setLoadedModels((prev) => {
         if (prev.includes(1)) return prev
         return [...prev, 1]
       })
-    }, 3000)
+    }, 2000)
 
     const timer2 = setTimeout(() => {
       setLoadedModels((prev) => {
         if (prev.includes(2)) return prev
         return [...prev, 2]
       })
-    }, 3000)
+    }, 4000)
 
     return () => {
       clearTimeout(timer1)
@@ -260,10 +258,23 @@ export default function Hero({ index, setIndex }) {
     const timer = setTimeout(() => {
       setDisplayIndex(index)
       setIsTransitioning(false)
-    }, 600)
+    }, 300)
 
     return () => clearTimeout(timer)
   }, [index, displayIndex])
+
+  const handleOpenProject = () => {
+    if (onOpenProject) {
+      onOpenProject(true)
+    }
+
+    setTimeout(() => {
+      const projectSection = document.getElementById('project-content')
+      if (projectSection) {
+        projectSection.scrollIntoView({ behavior: 'smooth' })
+      }
+    }, 100)
+  }
 
   return (
     <section
@@ -331,11 +342,11 @@ export default function Hero({ index, setIndex }) {
             color: '#555',
             marginTop: '24px',
             marginBottom: '14px',
-            maxWidth: '300px',
+            maxWidth: '330px',
           }}
         >
-          UX/UI Designer with a focus on UX research, user testing,
-          3D, and interactive digital experiences.
+          Interactive and digital designer focused on visual storytelling,
+          immersive web experiences, and creative digital interaction.
         </p>
 
         <div style={{ marginTop: '32px' }}>
@@ -367,7 +378,6 @@ export default function Hero({ index, setIndex }) {
           zIndex: 20,
           textAlign: 'center',
           fontFamily: 'system-ui, sans-serif',
-          pointerEvents: 'none',
           opacity: isTransitioning ? 0 : 1,
           transition: 'opacity 0.25s ease',
         }}
@@ -383,16 +393,20 @@ export default function Hero({ index, setIndex }) {
           {activeProject.title}
         </div>
 
-        <div
+        <button
+          onClick={handleOpenProject}
           style={{
-            width: 0,
-            height: 0,
-            margin: '0 auto',
-            borderLeft: '13px solid transparent',
-            borderRight: '13px solid transparent',
-            borderTop: '13px solid #333',
+            padding: '12px 22px',
+            borderRadius: '999px',
+            border: '1px solid #222',
+            background: '#111',
+            color: '#fff',
+            fontSize: '14px',
+            cursor: 'pointer',
           }}
-        />
+        >
+          Open Project
+        </button>
       </div>
     </section>
   )
