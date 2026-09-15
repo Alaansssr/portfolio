@@ -1,3 +1,4 @@
+import ViewportVideo from '../components/ViewportVideo'
 import { useEffect, useRef, useState } from 'react'
 
 export default function Project1() {
@@ -52,7 +53,7 @@ export default function Project1() {
       if (!stickySectionRef.current) return
 
       const rect = stickySectionRef.current.getBoundingClientRect()
-      const totalScroll = rect.height - window.innerHeight
+      const totalScroll = Math.max(1, rect.height - window.innerHeight)
 
       const progress = Math.min(Math.max(-rect.top / totalScroll, 0), 1)
 
@@ -65,11 +66,23 @@ export default function Project1() {
       setDisplayAspect(newIndex)
     }
 
-    window.addEventListener('scroll', handleScroll)
-    handleScroll()
+    let frame = 0
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(() => {
+        frame = 0
+        handleScroll()
+      })
+    }
+    window.addEventListener('scroll', schedule, { passive: true })
+    window.addEventListener('resize', schedule)
+    schedule()
 
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+    return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', schedule)
+      window.removeEventListener('resize', schedule)
+    }
+  }, [aspects.length])
 
   return (
     <div>
@@ -82,7 +95,7 @@ export default function Project1() {
           marginBottom: 60,
         }}
       >
-        <video
+        <ViewportVideo
           src="/videos/project1.mp4"
           autoPlay
           loop
@@ -138,7 +151,7 @@ export default function Project1() {
           </div>
 
           <div style={{ flex: 1, minWidth: 300 }}>
-            <video
+            <ViewportVideo
               src="/videos/project1-process.mp4"
               autoPlay
               loop
@@ -163,7 +176,7 @@ export default function Project1() {
         </h3>
 
         <div style={{ display: 'flex', gap: 40, flexWrap: 'wrap' }}>
-          <video
+          <ViewportVideo
             src="/videos/project1-mapping.mp4"
             autoPlay
             loop
@@ -179,7 +192,7 @@ export default function Project1() {
             }}
           />
 
-          <video
+          <ViewportVideo
             src="/videos/project1-second.mp4"
             autoPlay
             loop
@@ -196,7 +209,7 @@ export default function Project1() {
           />
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-            <img
+            <img loading="lazy" decoding="async"
               src="/images/map1.jpg"
               alt="Campus map 1"
               style={{
@@ -206,7 +219,7 @@ export default function Project1() {
               }}
             />
 
-            <img
+            <img loading="lazy" decoding="async"
               src="/images/map2.jpg"
               alt="Campus map 2"
               style={{
@@ -255,7 +268,7 @@ export default function Project1() {
                     transition: 'opacity 0.35s ease, transform 0.35s ease',
                   }}
                 >
-                  <img
+                  <img loading="lazy" decoding="async"
                     src={item.src}
                     alt={item.title}
                     style={{
@@ -288,7 +301,7 @@ export default function Project1() {
                 transition: 'transform 1s cubic-bezier(0.22, 1, 0.36, 1)',
               }}
             >
-              <img
+              <img loading="lazy" decoding="async"
                 src="/images/design-language.jpg"
                 alt="Design Language"
                 style={{
@@ -300,7 +313,7 @@ export default function Project1() {
                 }}
               />
 
-              <video
+              <ViewportVideo
                 src="/videos/haptic-system.mp4"
                 autoPlay
                 loop
@@ -317,7 +330,7 @@ export default function Project1() {
                 }}
               />
 
-              <video
+              <ViewportVideo
                 src="/videos/game-logic.mp4"
                 autoPlay
                 loop
@@ -334,7 +347,7 @@ export default function Project1() {
                 }}
               />
 
-              <video
+              <ViewportVideo
                 src="/videos/testing.mp4"
                 autoPlay
                 loop
@@ -374,7 +387,7 @@ export default function Project1() {
             flexWrap: 'wrap',
           }}
         >
-          <video
+          <ViewportVideo
             src="/videos/work1.mp4"
             autoPlay
             loop
@@ -392,7 +405,7 @@ export default function Project1() {
             }}
           />
 
-          <video
+          <ViewportVideo
             src="/videos/work3.mp4"
             autoPlay
             loop
@@ -410,7 +423,7 @@ export default function Project1() {
             }}
           />
 
-          <video
+          <ViewportVideo
             src="/videos/work2.mp4"
             autoPlay
             loop

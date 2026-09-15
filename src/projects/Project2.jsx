@@ -1,3 +1,4 @@
+import ViewportVideo from '../components/ViewportVideo'
 import { useEffect, useRef, useState } from 'react'
 
 export default function ProjectArena() {
@@ -26,16 +27,28 @@ export default function ProjectArena() {
       if (!reviewsSectionRef.current) return
 
       const rect = reviewsSectionRef.current.getBoundingClientRect()
-      const totalScroll = rect.height - window.innerHeight
+      const totalScroll = Math.max(1, rect.height - window.innerHeight)
       const progress = Math.min(Math.max(-rect.top / totalScroll, 0), 1)
 
       setReviewProgress(progress)
     }
 
-    window.addEventListener('scroll', handleScroll)
-    handleScroll()
+    let frame = 0
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(() => {
+        frame = 0
+        handleScroll()
+      })
+    }
+    window.addEventListener('scroll', schedule, { passive: true })
+    window.addEventListener('resize', schedule)
+    schedule()
 
-    return () => window.removeEventListener('scroll', handleScroll)
+    return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', schedule)
+      window.removeEventListener('resize', schedule)
+    }
   }, [])
 
   return (
@@ -153,7 +166,7 @@ export default function ProjectArena() {
           overflow: 'hidden',
         }}
       >
-        <img
+        <img loading="lazy" decoding="async"
           src="/images/arena-overview.jpg"
           alt="Arena overview"
           style={{
@@ -225,7 +238,7 @@ export default function ProjectArena() {
               const isVisible = reviewProgress >= start
 
               return (
-                <img
+                <img loading="lazy" decoding="async"
                   key={src}
                   src={src}
                   alt={`Visitor review ${index + 1}`}
@@ -297,7 +310,7 @@ export default function ProjectArena() {
             marginBottom: 12,
           }}
         >
-          <img
+          <img loading="lazy" decoding="async"
             src={item.src}
             alt={item.label}
             style={{
@@ -336,7 +349,7 @@ export default function ProjectArena() {
     }}
   >
     <div style={{ flex: '1 1 400px' }}>
-      <img
+      <img loading="lazy" decoding="async"
         src="/images/journey1.jpg"
         alt="User journey beginning"
         style={{
@@ -351,7 +364,7 @@ export default function ProjectArena() {
     </div>
 
     <div style={{ flex: '1 1 400px' }}>
-      <img
+      <img loading="lazy" decoding="async"
         src="/images/journey2.jpg"
         alt="User journey interaction"
         style={{
@@ -381,7 +394,7 @@ export default function ProjectArena() {
   <div style={{ maxWidth: 900, margin: '0 auto' }}>
     
     {/* VIDEO */}
-    <video
+    <ViewportVideo
       src="/videos/arena-prototype.mp4"
       autoPlay
       loop
@@ -404,7 +417,7 @@ export default function ProjectArena() {
         flexWrap: 'wrap',
       }}
     >
-      <img
+      <img loading="lazy" decoding="async"
         src="/images/prototype1.jpg"
         style={{
           flex: '1 1 400px',
@@ -414,7 +427,7 @@ export default function ProjectArena() {
         }}
       />
 
-      <img
+      <img loading="lazy" decoding="async"
         src="/images/prototype2.jpg"
         style={{
           flex: '1 1 400px',

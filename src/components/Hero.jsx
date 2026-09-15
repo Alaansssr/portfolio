@@ -1,267 +1,39 @@
-import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { useGLTF } from '@react-three/drei'
-import { Suspense, useEffect, useRef, useState } from 'react'
-import * as THREE from 'three'
+import { Suspense, lazy, useEffect, useRef, useState } from 'react'
 import { projects } from '../data/projects'
 
-function LoadingModel() {
-  const ref = useRef()
-
-  useFrame(({ clock }) => {
-    if (!ref.current) return
-    ref.current.rotation.y = clock.getElapsedTime() * 0.8
-  })
-
-  return (
-    <group ref={ref}>
-      <mesh>
-        <sphereGeometry args={[0.7, 32, 32]} />
-        <meshStandardMaterial color="#ddd" wireframe />
-      </mesh>
-    </group>
-  )
-}
-
-function ProjectModel({
-  path,
-  scale = 0.1,
-  opacity = 1,
-  position = [0, 0, 0],
-  rotationOffset = [0, 0, 0],
-  isActive = false,
-}) {
-  const { scene } = useGLTF(path)
-
-  const modelRef = useRef()
-  const isDragging = useRef(false)
-  const lastPointer = useRef({ x: 0, y: 0 })
-
-  const rotation = useRef({
-    x: 0.4,
-    y: -0.45,
-    z: 0,
-  })
-
-  useEffect(() => {
-    scene.traverse((child) => {
-      if (child.isMesh) {
-        child.material.transparent = true
-        child.material.opacity = opacity
-      }
-    })
-  }, [scene, opacity])
-
-  useFrame(({ clock }) => {
-    if (!modelRef.current) return
-
-    const t = clock.getElapsedTime()
-    const idleShake = isActive ? Math.sin(t * 0.8) * 0.15 : 0
-
-    modelRef.current.rotation.x = rotation.current.x + rotationOffset[0]
-    modelRef.current.rotation.y =
-      rotation.current.y + rotationOffset[1] + idleShake
-    modelRef.current.rotation.z = rotation.current.z + rotationOffset[2]
-  })
-
-  const handlePointerDown = (e) => {
-    e.stopPropagation()
-    isDragging.current = true
-
-    lastPointer.current = {
-      x: e.clientX,
-      y: e.clientY,
-    }
-
-    e.target.setPointerCapture(e.pointerId)
-  }
-
-  const handlePointerMove = (e) => {
-    if (!isDragging.current) return
-
-    const deltaX = e.clientX - lastPointer.current.x
-    const deltaY = e.clientY - lastPointer.current.y
-
-    lastPointer.current = {
-      x: e.clientX,
-      y: e.clientY,
-    }
-
-    rotation.current.y += deltaX * 0.005
-    rotation.current.x += deltaY * 0.005
-    rotation.current.z += (deltaX + deltaY) * 0.001
-  }
-
-  const handlePointerUp = (e) => {
-    e.stopPropagation()
-    isDragging.current = false
-    e.target.releasePointerCapture(e.pointerId)
-  }
-
-  return (
-    <group
-      ref={modelRef}
-      scale={scale}
-      position={position}
-      onPointerDown={handlePointerDown}
-      onPointerMove={handlePointerMove}
-      onPointerUp={handlePointerUp}
-    >
-      <primitive object={scene} />
-    </group>
-  )
-}
-
-function ModelByType({ p, isActive }) {
-  if (p.type === 'box') {
-    return (
-      <ProjectModel
-        path="/models/project1.glb"
-        scale={0.1}
-        position={[0, 0, 0]}
-        rotationOffset={[0, 0, 0]}
-        opacity={isActive ? 1 : 0.25}
-        isActive={isActive}
-      />
-    )
-  }
-
-  if (p.type === 'sphere') {
-    return (
-      <ProjectModel
-        path="/models/project2.glb"
-        scale={1}
-        position={[0, 0.4, 0]}
-        rotationOffset={[-0.1, 0, 0]}
-        opacity={isActive ? 1 : 0.25}
-        isActive={isActive}
-      />
-    )
-  }
-
-  if (p.type === 'cone') {
-    return (
-      <ProjectModel
-        path="/models/project3.glb"
-        scale={1}
-        position={[0, 0.4, 0]}
-        rotationOffset={[-0.1, 1, 0]}
-        opacity={isActive ? 1 : 0.25}
-        isActive={isActive}
-      />
-    )
-  }
-
-  return null
-}
-
-function Strip({ index, setIndex, loadedModels }) {
-  const ref = useRef()
-  const spacing = 6
-
-  useFrame(() => {
-    if (!ref.current) return
-
-    const targetX = -index * spacing
-    ref.current.position.x +=
-      (targetX - ref.current.position.x) * 0.08
-  })
-
-  return (
-    <group ref={ref}>
-      {projects.map((p, i) => {
-        const isActive = i === index
-        const shouldLoadModel = loadedModels.includes(i)
-
-        return (
-          <group
-            key={i}
-            position={[i * spacing + 1.8, 0, 0]}
-            scale={isActive ? 1.6 : 0.9}
-            onClick={(e) => {
-              e.stopPropagation()
-              setIndex(i)
-            }}
-            onPointerOver={() => {
-              document.body.style.cursor = 'pointer'
-            }}
-            onPointerOut={() => {
-              document.body.style.cursor = 'default'
-            }}
-          >
-            {shouldLoadModel ? (
-              <Suspense fallback={<LoadingModel />}>
-                <ModelByType p={p} isActive={isActive} />
-              </Suspense>
-            ) : (
-              <LoadingModel />
-            )}
-          </group>
-        )
-      })}
-    </group>
-  )
-}
-
-function Camera() {
-  const { camera } = useThree()
-
-  useFrame(() => {
-    camera.position.lerp(new THREE.Vector3(0, 0, 6), 0.05)
-    camera.lookAt(0, 0, 0)
-  })
-
-  return null
-}
+const HeroScene = lazy(() => import('./HeroScene'))
 
 export default function Hero({ index, setIndex, onOpenProject }) {
+  const heroRef = useRef(null)
+  const [visible, setVisible] = useState(true)
   const [displayIndex, setDisplayIndex] = useState(index)
-  const [isTransitioning, setIsTransitioning] = useState(false)
-
-  // Load only first GLB immediately
-  const [loadedModels, setLoadedModels] = useState([0])
-
   const activeProject = projects[displayIndex]
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDisplayIndex(index), 300)
+    return () => clearTimeout(timer)
+  }, [index])
+
+  useEffect(() => {
+    let intersects = true
+    const updateVisibility = () => setVisible(intersects && !document.hidden)
+    const observer = new IntersectionObserver(([entry]) => {
+      intersects = entry.isIntersecting
+      updateVisibility()
+    })
+    observer.observe(heroRef.current)
+    document.addEventListener('visibilitychange', updateVisibility)
+    return () => {
+      observer.disconnect()
+      document.removeEventListener('visibilitychange', updateVisibility)
+    }
+  }, [])
 
   const backgroundColors = [
     'radial-gradient(circle at 60% 45%, rgba(255,120,0,0.10), #fff 55%)',
     'radial-gradient(circle at 60% 45%, rgba(0,150,255,0.10), #fff 55%)',
     'radial-gradient(circle at 60% 45%, rgba(120,255,180,0.10), #fff 55%)',
   ]
-
-  // Load the other icons AFTER the first screen is visible
-  useEffect(() => {
-    const timer1 = setTimeout(() => {
-      setLoadedModels((prev) => {
-        if (prev.includes(1)) return prev
-        return [...prev, 1]
-      })
-    }, 2000)
-
-    const timer2 = setTimeout(() => {
-      setLoadedModels((prev) => {
-        if (prev.includes(2)) return prev
-        return [...prev, 2]
-      })
-    }, 4000)
-
-    return () => {
-      clearTimeout(timer1)
-      clearTimeout(timer2)
-    }
-  }, [])
-
-  useEffect(() => {
-    if (displayIndex === index) return
-
-    setIsTransitioning(true)
-
-    const timer = setTimeout(() => {
-      setDisplayIndex(index)
-      setIsTransitioning(false)
-    }, 300)
-
-    return () => clearTimeout(timer)
-  }, [index, displayIndex])
 
   const handleOpenProject = () => {
     if (onOpenProject) {
@@ -278,6 +50,7 @@ export default function Hero({ index, setIndex, onOpenProject }) {
 
   return (
     <section
+      ref={heroRef}
       style={{
         height: '100vh',
         position: 'relative',
@@ -286,18 +59,9 @@ export default function Hero({ index, setIndex, onOpenProject }) {
         transition: 'background 1s ease',
       }}
     >
-      <Canvas dpr={1}>
-        <ambientLight intensity={1.6} />
-        <directionalLight position={[5, 5, 5]} intensity={0.8} />
-
-        <Strip
-          index={index}
-          setIndex={setIndex}
-          loadedModels={loadedModels}
-        />
-
-        <Camera />
-      </Canvas>
+      <Suspense fallback={<div style={{ position: 'absolute', left: '60%', top: '45%', color: '#777' }}>Loading 3D preview…</div>}>
+        <HeroScene index={index} setIndex={setIndex} visible={visible} />
+      </Suspense>
 
       <div
         style={{
@@ -378,7 +142,7 @@ export default function Hero({ index, setIndex, onOpenProject }) {
           zIndex: 20,
           textAlign: 'center',
           fontFamily: 'system-ui, sans-serif',
-          opacity: isTransitioning ? 0 : 1,
+          opacity: displayIndex === index ? 1 : 0,
           transition: 'opacity 0.25s ease',
         }}
       >

@@ -1,22 +1,28 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef } from 'react'
 
 export default function Project3() {
-  const [mouse, setMouse] = useState({ x: 0, y: 0 })
+  const coverRef = useRef(null)
+  const frameRef = useRef(0)
+  useEffect(() => () => cancelAnimationFrame(frameRef.current), [])
 
-  useEffect(() => {
-    const move = (e) => {
-      setMouse({ x: e.clientX, y: e.clientY })
-    }
-
-    window.addEventListener('mousemove', move)
-
-    return () => window.removeEventListener('mousemove', move)
-  }, [])
+  const handlePointerMove = (event) => {
+    const cover = coverRef.current
+    const rect = cover.getBoundingClientRect()
+    const x = event.clientX - rect.left
+    const y = event.clientY - rect.top
+    cancelAnimationFrame(frameRef.current)
+    frameRef.current = requestAnimationFrame(() => {
+      cover.style.setProperty('--pointer-x', `${x}px`)
+      cover.style.setProperty('--pointer-y', `${y}px`)
+    })
+  }
 
   return (
     <>
       {/* COVER */}
       <section
+        ref={coverRef}
+        onPointerMove={handlePointerMove}
         style={{
           width: '100vw',
           height: '50vh',
@@ -48,10 +54,11 @@ export default function Project3() {
             borderRadius: '50%',
             background:
               'radial-gradient(circle, rgba(0,180,255,0.12), transparent 70%)',
-            left: mouse.x - 250,
-            top: mouse.y - 250,
+            left: -250,
+            top: -250,
+            transform: 'translate3d(var(--pointer-x, 0px), var(--pointer-y, 0px), 0)',
             pointerEvents: 'none',
-            transition: 'all 0.12s linear',
+            transition: 'transform 0.12s linear',
           }}
         />
 
@@ -226,8 +233,9 @@ export default function Project3() {
         <div
           style={{
             position: 'absolute',
-            left: mouse.x - 12,
-            top: mouse.y,
+            left: -12,
+            top: 0,
+            transform: 'translate3d(var(--pointer-x, 0px), var(--pointer-y, 0px), 0)',
             width: 24,
             height: 1,
             background: 'rgba(255,255,255,0.35)',
@@ -238,8 +246,9 @@ export default function Project3() {
         <div
           style={{
             position: 'absolute',
-            left: mouse.x,
-            top: mouse.y - 12,
+            left: 0,
+            top: -12,
+            transform: 'translate3d(var(--pointer-x, 0px), var(--pointer-y, 0px), 0)',
             width: 1,
             height: 24,
             background: 'rgba(255,255,255,0.35)',
@@ -319,7 +328,7 @@ export default function Project3() {
   </div>
 
   {/* 2D PLAN */}
-  <img
+  <img loading="lazy" decoding="async"
     src="/images/plan1.jpg"
     alt="2D Plan"
     style={{
@@ -338,7 +347,7 @@ export default function Project3() {
     gap: '24px',
   }}
 >
-  <img
+  <img loading="lazy" decoding="async"
     src="/images/render1.jpg"
     alt=""
     style={{
@@ -348,7 +357,7 @@ export default function Project3() {
     }}
   />
 
-  <img
+  <img loading="lazy" decoding="async"
     src="/images/render2.jpg"
     alt=""
     style={{
@@ -358,7 +367,7 @@ export default function Project3() {
     }}
   />
 
-  <img
+  <img loading="lazy" decoding="async"
     src="/images/render3.jpg"
     alt=""
     style={{
@@ -368,7 +377,7 @@ export default function Project3() {
     }}
   />
 
-  <img
+  <img loading="lazy" decoding="async"
     src="/images/render4.jpg"
     alt=""
     style={{
@@ -417,7 +426,7 @@ export default function Project3() {
   </div>
 
   {/* 2D PLAN */}
-  <img
+  <img loading="lazy" decoding="async"
     src="/images/plan2.jpg"
     alt="2D Plan"
     style={{
@@ -438,7 +447,7 @@ export default function Project3() {
   >
     {/* IMAGE 1 */}
     <div>
-      <img
+      <img loading="lazy" decoding="async"
         src="/images/project2-render1.jpg"
         alt=""
         style={{
@@ -462,7 +471,7 @@ export default function Project3() {
 
     {/* IMAGE 2 */}
     <div>
-      <img
+      <img loading="lazy" decoding="async"
         src="/images/project2-render2.jpg"
         alt=""
         style={{
@@ -486,7 +495,7 @@ export default function Project3() {
 
     {/* IMAGE 3 */}
     <div>
-      <img
+      <img loading="lazy" decoding="async"
         src="/images/project2-render3.jpg"
         alt=""
         style={{
@@ -510,7 +519,7 @@ export default function Project3() {
 
     {/* IMAGE 4 */}
     <div>
-      <img
+      <img loading="lazy" decoding="async"
         src="/images/project2-render4.jpg"
         alt=""
         style={{
