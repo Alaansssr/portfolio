@@ -1,38 +1,53 @@
-import { Canvas, useFrame } from '@react-three/fiber'
-import { useGLTF } from '@react-three/drei'
+import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js'
 import { Suspense, useEffect, useRef } from 'react'
+import { MeshBVH, acceleratedRaycast } from 'three-mesh-bvh'
 import { projects } from '../data/projects'
 
-function LoadingModel() {
-  const ref = useRef()
+const modelPaths = ['/models/project1-v2.glb', '/models/project2-v2.glb', '/models/project3-v2.glb']
+const configureLoader = (loader) => loader.setMeshoptDecoder(MeshoptDecoder)
 
-  useFrame(({ clock }) => {
-    if (!ref.current) return
-    ref.current.rotation.y = clock.getElapsedTime() * 0.8
-  })
-
-  return (
-    <group ref={ref}>
-      <mesh>
-        <sphereGeometry args={[0.7, 32, 32]} />
-        <meshStandardMaterial color="#ddd" wireframe />
-      </mesh>
-    </group>
-  )
+function SceneReady({ onReady }) {
+  const { gl, scene, camera, invalidate } = useThree()
+  useEffect(() => {
+    let cancelled = false
+    let frame = 0
+    // Upload textures and compile shaders behind the matching static render.
+    gl.compileAsync(scene, camera).then(() => {
+      if (cancelled) return
+      invalidate()
+      frame = requestAnimationFrame(() => {
+        frame = requestAnimationFrame(() => {
+          if (!cancelled) onReady()
+        })
+      })
+    })
+    return () => { cancelled = true; cancelAnimationFrame(frame) }
+  }, [gl, scene, camera, invalidate, onReady])
+  return null
 }
 
 function ProjectModel({
-  path,
+  scene,
   scale = 0.1,
   opacity = 1,
   position = [0, 0, 0],
   rotationOffset = [0, 0, 0],
   isActive = false,
 }) {
-  const { scene } = useGLTF(path)
+
+  useEffect(() => {
+    scene.traverse((child) => {
+      if (!child.isMesh) return
+      if (!child.geometry.boundsTree) child.geometry.boundsTree = new MeshBVH(child.geometry)
+      child.raycast = acceleratedRaycast
+    })
+  }, [scene])
 
   const modelRef = useRef()
   const isDragging = useRef(false)
+  const animationStart = useRef(null)
   const lastPointer = useRef({ x: 0, y: 0 })
 
   const rotation = useRef({
@@ -56,7 +71,8 @@ function ProjectModel({
   useFrame(({ clock }) => {
     if (!modelRef.current) return
 
-    const t = clock.getElapsedTime()
+    if (animationStart.current === null) animationStart.current = clock.getElapsedTime()
+    const t = clock.getElapsedTime() - animationStart.current
     const idleShake = isActive ? Math.sin(t * 0.8) * 0.15 : 0
 
     modelRef.current.rotation.x = rotation.current.x + rotationOffset[0]
@@ -113,11 +129,11 @@ function ProjectModel({
   )
 }
 
-function ModelByType({ p, isActive }) {
+function ModelByType({ p, isActive, scene }) {
   if (p.type === 'box') {
     return (
       <ProjectModel
-        path="/models/project1.glb"
+        scene={scene}
         scale={0.1}
         position={[0, 0, 0]}
         rotationOffset={[0, 0, 0]}
@@ -130,7 +146,7 @@ function ModelByType({ p, isActive }) {
   if (p.type === 'sphere') {
     return (
       <ProjectModel
-        path="/models/project2.glb"
+        scene={scene}
         scale={1}
         position={[0, 0.4, 0]}
         rotationOffset={[-0.1, 0, 0]}
@@ -143,7 +159,7 @@ function ModelByType({ p, isActive }) {
   if (p.type === 'cone') {
     return (
       <ProjectModel
-        path="/models/project3.glb"
+        scene={scene}
         scale={1}
         position={[0, 0.4, 0]}
         rotationOffset={[-0.1, 1, 0]}
@@ -156,7 +172,8 @@ function ModelByType({ p, isActive }) {
   return null
 }
 
-function Strip({ index, setIndex }) {
+function Strip({ index, setIndex, onReady }) {
+  const models = useLoader(GLTFLoader, modelPaths, configureLoader)
   const ref = useRef()
   const spacing = 6
 
@@ -180,6 +197,7 @@ function Strip({ index, setIndex }) {
             scale={isActive ? 1.6 : 0.9}
             onClick={(e) => {
               e.stopPropagation()
+              if (e.delta > 4) return
               setIndex(i)
             }}
             onPointerOver={() => {
@@ -189,22 +207,23 @@ function Strip({ index, setIndex }) {
               document.body.style.cursor = 'default'
             }}
           >
-            <Suspense fallback={<LoadingModel />}>
-              <ModelByType p={p} isActive={isActive} />
-            </Suspense>
+            <ModelByType p={p} isActive={isActive} scene={models[i].scene} />
           </group>
         )
       })}
+      <SceneReady onReady={onReady} />
     </group>
   )
 }
 
-export default function HeroScene({ index, setIndex, visible }) {
+export default function HeroScene({ index, setIndex, visible, onReady }) {
   return (
-    <Canvas dpr={1} camera={{ position: [0, 0, 6] }} frameloop={visible ? 'always' : 'never'}>
+    <Canvas dpr={1} camera={{ position: [0, 0, 6] }} frameloop={visible ? 'always' : 'never'} raycaster={{ firstHitOnly: true }}>
       <ambientLight intensity={1.6} />
       <directionalLight position={[5, 5, 5]} intensity={0.8} />
-      <Strip index={index} setIndex={setIndex} />
+      <Suspense fallback={null}>
+        <Strip index={index} setIndex={setIndex} onReady={onReady} />
+      </Suspense>
     </Canvas>
   )
 }

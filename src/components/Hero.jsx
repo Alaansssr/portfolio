@@ -1,9 +1,11 @@
-import { Suspense, lazy, useEffect, useRef, useState } from 'react'
+import { Suspense, lazy, useCallback, useEffect, useRef, useState } from 'react'
 import { projects } from '../data/projects'
 
 const HeroScene = lazy(() => import('./HeroScene'))
 
 export default function Hero({ index, setIndex, onOpenProject }) {
+  const [sceneReady, setSceneReady] = useState(false)
+  const handleSceneReady = useCallback(() => setSceneReady(true), [])
   const heroRef = useRef(null)
   const [visible, setVisible] = useState(true)
   const [displayIndex, setDisplayIndex] = useState(index)
@@ -59,9 +61,17 @@ export default function Hero({ index, setIndex, onOpenProject }) {
         transition: 'background 1s ease',
       }}
     >
-      <Suspense fallback={<div style={{ position: 'absolute', left: '60%', top: '45%', color: '#777' }}>Loading 3D preview…</div>}>
-        <HeroScene index={index} setIndex={setIndex} visible={visible} />
-      </Suspense>
+      {!sceneReady && (
+        <div aria-hidden="true" style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
+          <img src="/images/hero-models-v2.webp" alt="" fetchPriority="high" width="1920" height="1080"
+            style={{ position: 'absolute', height: '100%', width: 'auto', maxWidth: 'none', left: '50%', transform: 'translateX(-50%)' }} />
+        </div>
+      )}
+      <div style={{ height: '100%', opacity: sceneReady ? 1 : 0 }}>
+        <Suspense fallback={null}>
+          <HeroScene index={index} setIndex={setIndex} visible={visible} onReady={handleSceneReady} />
+        </Suspense>
+      </div>
 
       <div
         style={{
