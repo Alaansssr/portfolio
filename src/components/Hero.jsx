@@ -3,7 +3,7 @@ import { projects } from '../data/projects'
 
 const HeroScene = lazy(() => import('./HeroScene'))
 
-export default function Hero({ index, setIndex, onOpenProject }) {
+export default function Hero({ index, setIndex }) {
   const [sceneReady, setSceneReady] = useState(false)
   const handleSceneReady = useCallback(() => setSceneReady(true), [])
   const heroRef = useRef(null)
@@ -36,19 +36,6 @@ export default function Hero({ index, setIndex, onOpenProject }) {
     'radial-gradient(circle at 60% 45%, rgba(0,150,255,0.10), #fff 55%)',
     'radial-gradient(circle at 60% 45%, rgba(120,255,180,0.10), #fff 55%)',
   ]
-
-  const handleOpenProject = () => {
-    if (onOpenProject) {
-      onOpenProject(true)
-    }
-
-    setTimeout(() => {
-      const projectSection = document.getElementById('project-content')
-      if (projectSection) {
-        projectSection.scrollIntoView({ behavior: 'smooth' })
-      }
-    }, 100)
-  }
 
   return (
     <section
@@ -167,20 +154,15 @@ export default function Hero({ index, setIndex, onOpenProject }) {
           {activeProject.title}
         </div>
 
-        <button
-          onClick={handleOpenProject}
+        <p
           style={{
-            padding: '12px 22px',
-            borderRadius: '999px',
-            border: '1px solid #222',
-            background: '#111',
-            color: '#fff',
+            margin: 0,
+            color: '#666',
             fontSize: '14px',
-            cursor: 'pointer',
           }}
         >
-          Open Project
-        </button>
+          Scroll to explore <span aria-hidden="true">↓</span>
+        </p>
       </div>
     </section>
   )

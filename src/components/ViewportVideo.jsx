@@ -1,14 +1,16 @@
 import { useEffect, useRef } from 'react'
 
-// Attach the source only near the viewport; decode/play only while visible.
-export default function ViewportVideo({ src, autoPlay, ...props }) {
+// Load near the viewport and play only while visible, without playback controls.
+export default function ViewportVideo({ src, autoPlay = true, style, ...props }) {
   const ref = useRef(null)
 
   useEffect(() => {
     const video = ref.current
     let visible = false
+    let loaded = false
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
     const syncPlayback = () => {
-      if (visible && !document.hidden && autoPlay) {
+      if (loaded && visible && !document.hidden && autoPlay && !reducedMotion.matches) {
         video.play().catch(() => {})
       } else {
         video.pause()
@@ -18,6 +20,7 @@ export default function ViewportVideo({ src, autoPlay, ...props }) {
       if (entry.isIntersecting) {
         video.src = src
         video.load()
+        loaded = true
         syncPlayback()
         loadObserver.disconnect()
       }
@@ -28,10 +31,12 @@ export default function ViewportVideo({ src, autoPlay, ...props }) {
     })
     loadObserver.observe(video)
     playObserver.observe(video)
+    reducedMotion.addEventListener('change', syncPlayback)
     document.addEventListener('visibilitychange', syncPlayback)
     return () => {
       loadObserver.disconnect()
       playObserver.disconnect()
+      reducedMotion.removeEventListener('change', syncPlayback)
       document.removeEventListener('visibilitychange', syncPlayback)
       video.pause()
       video.removeAttribute('src')
@@ -39,5 +44,9 @@ export default function ViewportVideo({ src, autoPlay, ...props }) {
     }
   }, [src, autoPlay])
 
-  return <video {...props} ref={ref} preload="none" />
+  return (
+    <video {...props} ref={ref} preload="none" controls={false} muted loop playsInline
+      disablePictureInPicture disableRemotePlayback tabIndex={-1}
+      style={{ ...style, pointerEvents: 'none' }} />
+  )
 }
