@@ -106,8 +106,8 @@ export default function Hero({ index, setIndex }) {
             maxWidth: '330px',
           }}
         >
-          Interactive and digital designer focused on visual storytelling,
-          immersive web experiences, and creative digital interaction.
+          Interaction designer exploring new ways for people to connect through
+          digital, physical and spatial experiences.
         </p>
 
         <div style={{ marginTop: '32px' }}>

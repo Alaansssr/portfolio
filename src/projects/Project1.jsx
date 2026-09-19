@@ -11,12 +11,8 @@ const aspects = [
     image: '/images/final1.jpg',
     label: 'Interface Design',
     heading: 'A visual language that moves.',
-    summary: 'The identity connects the game’s two central ideas: physical movement and social connection.',
-    points: [
-      ['Connecting forms', 'Dynamic blobs and vibration noise, crafted using p5, give connection a visible form.'],
-      ['A walking wordmark', 'The minimal logo mimics walking, connecting the name to play on feet.'],
-      ['Texture & type', 'Playful textures, Rethink Sans and custom reactive typography shape the visual identity.'],
-    ],
+    summary: 'The visual identity mirrors the mechanics of the game: movement, vibration and connection. Generative forms, reactive type and a walking wordmark translate these behaviours into the interface.',
+    points: [],
   },
   {
     image: '/images/final2.jpg',
@@ -46,12 +42,8 @@ const aspects = [
     image: '/images/final4.jpg',
     label: 'Game Testing',
     heading: 'Learning the language through play.',
-    summary: 'Tabletop and campus tests explored how people interpret signals and work together. The presentation records observations rather than measured performance results.',
-    points: [
-      ['What worked', 'The team reported clear direction cues, quick adaptation and signs of social bonding after play.'],
-      ['What was difficult', 'Coin feedback was unclear, the vibration vocabulary was limited, and range and latency caused problems.'],
-      ['What needs development', 'More distinct patterns and more reliable positioning are priorities for the next prototype.'],
-    ],
+    summary: 'Tabletop and campus tests explored how players interpret vibration cues and coordinate their movement. The testing and learning section below brings together the observations, limitations and next steps.',
+    points: [],
     video: 'testing',
   },
 ]
@@ -140,12 +132,12 @@ export default function Project1() {
           <p>{project.tagline}</p>
         </div>
         <p className="vp-opening-summary">{project.description}</p>
+        <p className="vp-opening-roles">One player sees the route on a screen. The other moves through physical space using vibration signals as guidance. Neither has enough information to succeed alone.</p>
         <p className="vp-disciplines">Interaction Design · Haptics · Physical Computing · Game Design · Prototyping</p>
         <div className="vp-intro-grid">
-          <h3>The starting question</h3>
+          <div><p className="vp-kicker">01 / Question</p><h3>The starting question</h3></div>
           <div><p className="vp-lead">Can two strangers learn to trust each other when one sees the route and the other feels the way?</p>
-            <p>VIBROFEST connects two different perspectives: one player reads a map on a screen and sends vibration cues, while the other interprets those cues and moves through physical space. The project explores how this shared responsibility can encourage communication, cooperation, and trust.</p>
-            <p>Designed with new university students in mind, the project brings this question into Freshers’ Week — a moment when strangers are looking for ways to connect.</p>
+            <p>Designed for Freshers’ Week, VIBROFEST explores whether shared challenges and unfamiliar forms of communication can help new students connect.</p>
           </div>
         </div>
         <dl className="vp-meta">
@@ -162,11 +154,11 @@ export default function Project1() {
       </div>
 
       <section className="vp-container vp-section" aria-labelledby="vp-how">
-        <div className="vp-heading"><span className="vp-kicker">01 / The concept</span><h3 id="vp-how">How it works</h3><p>One player sees the route. The other feels the way. The current prototype explores the question through two different roles: the controller uses a screen to send cues, while the moving player follows vibrations.</p></div>
+        <div className="vp-heading"><span className="vp-kicker">02 / How it works</span><h3 id="vp-how">How it works</h3><p>Different information gives each player a different responsibility.</p></div>
         <div className="vp-how-grid">
           <div>
-            <div className="vp-role"><span className="vp-kicker">Player 01 / Controller</span><h4>The eyes &amp; brain.</h4><p>Sees the map and obstacles, then sends navigation cues. The controller can guide the agent but cannot move for them.</p></div>
-            <div className="vp-role"><span className="vp-kicker">Player 02 / Agent</span><h4>The feet &amp; movement.</h4><p>Interprets vibration signals and moves in physical space, without the controller’s view of the obstacles.</p></div>
+            <div className="vp-role"><span className="vp-kicker">Player 01 / Controller</span><h4>The eyes &amp; brain.</h4><p>Reads the on-screen map and sends vibration cues. The controller knows the route but depends on the agent to act.</p></div>
+            <div className="vp-role"><span className="vp-kicker">Player 02 / Agent</span><h4>The feet &amp; movement.</h4><p>The agent can move, but must rely on vibration cues to understand where to go.</p></div>
             <p className="vp-callout">Different information creates a shared responsibility: neither player can win alone.</p>
           </div>
           <Video name="project1-process" caption="Concept visualization: the campus becomes a “floor is lava” game environment." />
@@ -175,10 +167,9 @@ export default function Project1() {
       </section>
 
       <section className="vp-container vp-section" aria-labelledby="vp-process">
-        <div className="vp-heading"><span className="vp-kicker">02 / Development</span><h3 id="vp-process">From vibration to shared play.</h3><p>The process began by researching how vibration could communicate meaning. Exploring real-life applications led to a cooperative game designed to bring people together, followed by campus mapping, interface design and prototyping in ProtoPie.</p></div>
+        <div className="vp-heading"><span className="vp-kicker">03 / Development</span><h3 id="vp-process">From vibration to shared play.</h3><p>An exploration of vibration as a language led to a shared game. Three questions shaped the direction before campus mapping and prototyping in ProtoPie made it tangible.</p></div>
         <div className="vp-journey">
-          <h4>How the idea evolved</h4>
-          <ol><li><span>Research</span>Understanding how vibration can work as a language</li><li><span>Explore</span>Finding a meaningful application for haptic communication in real-life events</li><li><span>Apply</span>Creating a cooperative game that helps people connect through shared play</li></ol>
+          <ol aria-label="Questions that shaped the project"><li>Can vibration communicate direction?</li><li>Where could haptic communication create a meaningful shared experience?</li><li>How could that become a game between two people?</li></ol>
         </div>
         <div className="vp-mapping-grid">
           <Video name="project1-mapping" caption="Mapping the campus: capturing the environment and its boundaries." />
@@ -193,7 +184,7 @@ export default function Project1() {
 
       <section className={`vp-aspects ${compact ? 'vp-compact' : ''}`} ref={stickySectionRef} aria-label="Design language, haptics, game mechanics and testing">
         <div className="vp-aspects-sticky">
-          <div className="vp-aspect-top"><p className="vp-kicker">03 / Inside the project</p><span className="vp-scroll-hint">Scroll to explore · or choose a chapter</span></div>
+          <div className="vp-aspect-top"><p className="vp-kicker">04 / Visual & interaction system</p><span className="vp-scroll-hint">Scroll to explore · or choose a chapter</span></div>
           <nav className="vp-aspect-nav" aria-label="Project chapters">
             {aspects.map((item, index) => (
               <button key={item.label} type="button" aria-current={!compact && selectedAspect === index ? 'step' : undefined}
@@ -216,29 +207,29 @@ export default function Project1() {
               </div>
             </div>
             <div className="vp-aspect-copy" id="vp-active-explanation">
-              <p className="vp-kicker">0{selectedAspect + 1} / {activeAspect.label}</p>
+
               <h3>{activeAspect.heading}</h3><p>{activeAspect.summary}</p>
-              <dl>{activeAspect.points.map(([title, copy]) => <div key={title}><dt>{title}</dt><dd>{copy}</dd></div>)}</dl>
+              {activeAspect.points.length > 0 && <dl>{activeAspect.points.map(([title, copy]) => <div key={title}><dt>{title}</dt><dd>{copy}</dd></div>)}</dl>}
             </div>
           </div> : <div className="vp-mobile-chapters">
             {aspects.map((aspect, index) => <section className="vp-mobile-chapter" id={`vp-chapter-${index}`} key={aspect.label}>
-              <div className="vp-aspect-copy"><p className="vp-kicker">0{index + 1} / {aspect.label}</p><h3>{aspect.heading}</h3><p>{aspect.summary}</p></div>
+              <div className="vp-aspect-copy"><h3>{aspect.heading}</h3><p>{aspect.summary}</p></div>
               {aspect.video ? <Video name={aspect.video} caption={aspect.label} /> : <figure className="vp-media"><img src={`${assetRoot}design-language-1200.webp`} loading="lazy" decoding="async" alt="VIBROFEST design board with its logo, textures and typography" /></figure>}
-              <dl className="vp-mobile-notes">{aspect.points.map(([title, copy]) => <div key={title}><dt>{title}</dt><dd>{copy}</dd></div>)}</dl>
+              {aspect.points.length > 0 && <dl className="vp-mobile-notes">{aspect.points.map(([title, copy]) => <div key={title}><dt>{title}</dt><dd>{copy}</dd></div>)}</dl>}
             </section>)}
           </div>}
         </div>
       </section>
 
       <section className="vp-container vp-section vp-testing" aria-labelledby="vp-testing-title">
-        <div className="vp-heading"><span className="vp-kicker">Testing / A closer look</span><h3 id="vp-testing-title">From paper prototypes to shared play.</h3><p>Original project photographs show early tabletop sessions exploring navigation, vibration cues and cooperation.</p></div>
+        <div className="vp-heading"><span className="vp-kicker">05 / Testing & learning</span><h3 id="vp-testing-title">From paper prototypes to shared play.</h3><p>Original project photographs show early tabletop sessions exploring navigation, vibration cues and cooperation.</p></div>
         <div className="vp-photo-grid">
           <Photo name="prototype-session" alt="A participant testing an input device beside a paper game map and vibration chart" caption="Exploring the relationship between input, vibration signals and a paper game map." />
           <Photo name="cooperative-test" alt="Two participants working together on the paper game map" caption="Two participants interpreting the route together in a tabletop prototype session." />
         </div>
         <details className="vp-future vp-paper"><summary>See the paper prototype <span aria-hidden="true">+</span></summary><div><Photo name="paper-prototype" alt="Paper game paths, colored pieces and a vibration chart used in the prototype tests" caption="A paper game map and vibration chart from the original testing sessions." /></div></details>
         <div className="vp-findings">
-          <div><h4>What the team observed</h4><ul><li>Haptic direction cues were reported as clearer to decode than spoken instructions.</li><li>Participants became familiar with the cues quickly.</li><li>The team noted social bonding that continued after the test.</li></ul></div>
+          <div><h4>What the team observed</h4><ul><li>Participants found the haptic direction cues easy to understand during the tests.</li><li>Participants became familiar with the cues quickly.</li><li>The team noted social bonding that continued after the test.</li></ul></div>
           <div><h4>Where the prototype fell short</h4><ul><li>Coin-related vibration feedback was difficult to interpret.</li><li>A small range of vibration patterns limited the feedback vocabulary.</li><li>Limited connection range and occasional latency affected play.</li></ul></div>
         </div>
         <p className="vp-source-note">Qualitative observations from the project presentation. Participant counts and quantitative measurements were not documented.</p>
@@ -246,13 +237,22 @@ export default function Project1() {
       </section>
 
       <section className="vp-container vp-section vp-final" aria-labelledby="vp-final-title">
-        <div className="vp-heading"><span className="vp-kicker">04 / The experience</span><h3 id="vp-final-title">Play together. Find your way together.</h3><p>These visualizations show the intended dynamic between controller and agent: the route is digital, but the challenge is shared in physical space.</p></div>
+        <div className="vp-heading"><span className="vp-kicker">06 / Experience & reflection</span><h3 id="vp-final-title">Play together. Find your way together.</h3><p>The route is digital. The movement, uncertainty and decisions are shared in physical space.</p></div>
         <div className="vp-final-grid">
           <Video name="work1" autoPlay caption="Controller and agent: two roles sharing one challenge." />
           <Video name="work3" caption="A shared game played in the campus environment." />
           <Video name="work2" className="vp-final-wide" caption="The campus as a social playing field." />
         </div>
         <p className="vp-source-note">Concept visualizations, including AI-generated imagery; prototype testing is documented in the section above.</p>
+        <div className="vp-reflection">
+          <h4>What VIBROFEST explored</h4>
+          <div>
+            <p>VIBROFEST began as an experiment with vibration and evolved into a question about communication.</p>
+            <p>Giving two players different information makes each depend on the other: one understands the route on screen, while the other controls the movement. Progress depends on translating that knowledge into cues the other person can interpret.</p>
+            <p>The prototype suggested the potential of haptic cues as a playful social language, while revealing limits in feedback variety, range and latency.</p>
+            <p className="vp-reflection-takeaway">For me, the project became an exploration of how interaction design can connect a digital interface to shared physical experience — through uncertainty, movement and trust.</p>
+          </div>
+        </div>
         <div className="vp-end"><span>VIBROFEST / Connecting strangers through touch</span><span>Alaa Suliman · 2026</span></div>
       </section>
     </article>

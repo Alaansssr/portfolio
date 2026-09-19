@@ -28,3 +28,9 @@ Final game-environment films are labeled concept visualizations, including AI im
 ## Opening narrative revision
 
 At the user’s request, VIBROFEST remains the first project and leads with “Connecting strangers through touch.” The tagline appears in the case study only; it was removed from the hero at the user’s request. The overview introduces the experimental intention, disciplines, and the question about building trust when one player sees the route and the other feels the way before showing the opening film. The technical explanation follows in “How it works,” explaining the controller’s on-screen map and the moving player’s vibration cues. Both the introductory description and opening question reflect these different roles; neither describes the whole experience as screen-free or speech-free.
+
+## Editorial refinement
+
+User-supplied discussion guided a tighter opening and six section labels: Question, How it works, Development, Visual & interaction system, Testing & learning, Experience & reflection. The hero biography now describes digital, physical and spatial interaction design. VIBROFEST remains first; its tagline stays out of the hero.
+
+Development is framed through exploratory questions. Visual identity is summarized around game behaviour, repeated testing bullets in the chapter viewer are removed, and a closing reflection links the digital controller to shared physical experience. Existing media, chapter navigation and testing limitations remain. The direction-cue observation no longer implies a structured comparison against spoken instructions. No new study results or screen-free claim is introduced.

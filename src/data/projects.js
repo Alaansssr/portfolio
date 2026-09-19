@@ -4,7 +4,7 @@ export const projects = [
     color: '#ff6b6b',
     title: 'VIBROFEST',
     tagline: 'Connecting strangers through touch.',
-    description: 'An experimental cooperative game where one player uses an on-screen map to guide another through vibration cues, exploring how shared challenges can build trust and connection.',
+    description: 'An experimental cooperative game exploring how two people can communicate and navigate together through haptic cues.',
     Component: 'Project1',
   },
   {
