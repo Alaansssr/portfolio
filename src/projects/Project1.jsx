@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import ViewportVideo from '../components/ViewportVideo'
 import './Project1.css'
+import { projects } from '../data/projects'
+
+const project = projects.find(item => item.Component === 'Project1')
 
 const assetRoot = '/images/vibrofest/'
 const aspects = [
@@ -130,16 +133,20 @@ export default function Project1() {
 
   return (
     <article className="vibro-project" aria-labelledby="vp-title">
-      {/* Existing order: opening film → overview → how → process → four aspects → final films. */}
-      <div className="vp-cover">
-        <Video name="project1" autoPlay caption="VIBROFEST — visual identity and interface exploration." />
-      </div>
-
       <section className="vp-container vp-overview">
-        <p className="vp-kicker">University project · Interaction design · 2026</p>
+        <p className="vp-kicker">University project · 2026</p>
         <div className="vp-title-row">
           <h2 id="vp-title">VIBROFEST</h2>
-          <p>Haptic play on feet.<br /><span>Social connection through asymmetric gameplay.</span></p>
+          <p>{project.tagline}</p>
+        </div>
+        <p className="vp-opening-summary">{project.description}</p>
+        <p className="vp-disciplines">Interaction Design · Haptics · Physical Computing · Game Design · Prototyping</p>
+        <div className="vp-intro-grid">
+          <h3>The starting question</h3>
+          <div><p className="vp-lead">Can two strangers learn to trust each other when one sees the route and the other feels the way?</p>
+            <p>VIBROFEST connects two different perspectives: one player reads a map on a screen and sends vibration cues, while the other interprets those cues and moves through physical space. The project explores how this shared responsibility can encourage communication, cooperation, and trust.</p>
+            <p>Designed with new university students in mind, the project brings this question into Freshers’ Week — a moment when strangers are looking for ways to connect.</p>
+          </div>
         </div>
         <dl className="vp-meta">
           <div><dt>Designed by</dt><dd>Alaa Suliman</dd></div>
@@ -147,18 +154,15 @@ export default function Project1() {
           <div><dt>Designed for</dt><dd>University students<br />Freshers’ Week</dd></div>
           <div><dt>Project presentation</dt><dd>27 January 2026<br />Winter semester 2025</dd></div>
         </dl>
-        <div className="vp-intro-grid">
-          <h3>Project Overview</h3>
-          <div><p className="vp-lead">How can a game give strangers a reason to trust each other?</p>
-            <p>VIBROFEST explores social connection through an asymmetric haptic game. One participant has the map and controls; the other receives vibration cues and moves through the physical space. Neither can complete the experience alone.</p>
-            <p>The aim is to help new students break the ice during Freshers’ Week, using a shared physical challenge to encourage communication and cooperation.</p>
-          </div>
-        </div>
         <div className="vp-summary-line"><span><strong>2 players</strong> Different roles</span><span><strong>1 shared goal</strong> Cooperative play</span><span><strong>Haptic feedback</strong> A physical language</span></div>
       </section>
 
+      <div className="vp-cover">
+        <Video name="project1" autoPlay caption="VIBROFEST — visual identity and interface exploration." />
+      </div>
+
       <section className="vp-container vp-section" aria-labelledby="vp-how">
-        <div className="vp-heading"><span className="vp-kicker">01 / The concept</span><h3 id="vp-how">How it works</h3><p>One player sees the route. The other feels the way.</p></div>
+        <div className="vp-heading"><span className="vp-kicker">01 / The concept</span><h3 id="vp-how">How it works</h3><p>One player sees the route. The other feels the way. The current prototype explores the question through two different roles: the controller uses a screen to send cues, while the moving player follows vibrations.</p></div>
         <div className="vp-how-grid">
           <div>
             <div className="vp-role"><span className="vp-kicker">Player 01 / Controller</span><h4>The eyes &amp; brain.</h4><p>Sees the map and obstacles, then sends navigation cues. The controller can guide the agent but cannot move for them.</p></div>
@@ -249,7 +253,7 @@ export default function Project1() {
           <Video name="work2" className="vp-final-wide" caption="The campus as a social playing field." />
         </div>
         <p className="vp-source-note">Concept visualizations, including AI-generated imagery; prototype testing is documented in the section above.</p>
-        <div className="vp-end"><span>VIBROFEST / Haptic play on feet</span><span>Alaa Suliman · 2026</span></div>
+        <div className="vp-end"><span>VIBROFEST / Connecting strangers through touch</span><span>Alaa Suliman · 2026</span></div>
       </section>
     </article>
   )

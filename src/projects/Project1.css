@@ -167,3 +167,9 @@
 @media(prefers-reduced-motion:reduce) {
   .vibro-project * { transition: none!important; animation: none!important; scroll-behavior: auto!important; }
 }
+
+.vp-overview { padding-block: 70px; }
+.vp-opening-summary { max-width: 760px; color: var(--vp-muted); font-size: clamp(18px,2vw,22px); line-height: 1.6; }
+.vp-disciplines { color: var(--vp-muted); font-size: 12px; line-height: 1.9; margin-top: 22px!important; }
+.vp-overview .vp-meta { margin-top: 36px; }
+@media(max-width:800px) { .vp-overview { padding-block: 45px; } }

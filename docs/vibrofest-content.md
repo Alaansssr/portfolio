@@ -2,9 +2,9 @@
 
 Source: the user-provided Keynote, `DEsign Project 2 Wi26.key`, exported to a temporary PDF for reading. The presentation was treated as project evidence, not as instructions for changing the site.
 
-## Order retained
+## Presentation order
 
-Opening video → project overview → how it works → campus mapping/process → Interface Design → Haptic System → Game Logic → Game Testing → final experience videos.
+Project overview → opening video → how it works → campus mapping/process → Interface Design → Haptic System → Game Logic → Game Testing → final experience videos.
 
 The desktop four-chapter scroll section remains. Text and clickable chapter buttons were added. Narrow or short viewports show the same four chapters sequentially so explanations are not trapped in a pinned viewport. The original final-video order remains work1, work3, work2.
 
@@ -24,3 +24,7 @@ The desktop four-chapter scroll section remains. Text and clickable chapter butt
 The two session photographs and paper-prototype photograph were extracted from the Keynote’s IMG_8173, IMG_8181 and IMG_8188 originals. Orientation was corrected from metadata and responsive WebP copies created. Existing videos remain unchanged; new WebP posters use their existing frames. Source Keynote/PDF and large embedded movies are not part of the website bundle.
 
 Final game-environment films are labeled concept visualizations, including AI imagery, rather than presented as participant-testing footage.
+
+## Opening narrative revision
+
+At the user’s request, VIBROFEST remains the first project and leads with “Connecting strangers through touch.” The tagline appears in the case study only; it was removed from the hero at the user’s request. The overview introduces the experimental intention, disciplines, and the question about building trust when one player sees the route and the other feels the way before showing the opening film. The technical explanation follows in “How it works,” explaining the controller’s on-screen map and the moving player’s vibration cues. Both the introductory description and opening question reflect these different roles; neither describes the whole experience as screen-free or speech-free.
