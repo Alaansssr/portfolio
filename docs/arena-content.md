@@ -32,3 +32,11 @@ Only Alaa Suliman appears as project author. The work is labeled an academic con
 Existing images remain the source. Responsive WebP derivatives are in `public/images/arena/`, at up to 640 and 1600 pixels wide. Eight original images total 9,498,316 bytes; both responsive sets together total 1,070,750 bytes (about 89% smaller). Original review screenshots remain unchanged. The poster is a frame extracted from the existing prototype video; no new generated imagery was added.
 
 The prototype retains the shared viewport-aware video behavior: muted automatic playback and looping while visible, pausing offscreen, no playback controls, and respect for reduced-motion preferences.
+
+## Interaction-first framing
+
+The opening now asks “Can a museum become a social experience?” and leads with shared discovery and participation. The Arena name and second-project position remain; Mercedes-Benz Museum appears as the academic context, not as a client or endorsement. The discipline list includes UX Research, supported here by selected review analysis and documented concept feedback, not an invented study. Copy varies its language across participation, discussion, discovery and play. All original section/media ordering and review animation remain unchanged.
+
+## Journey diagram
+
+At the user’s request, the two ambiguous journey storyboards are no longer displayed. A responsive four-stage HTML/SVG diagram replaces the images and duplicated step list in the same section. It explains check-in → exhibit dwell time → team formation → voting, using a clearly labeled racing/yellow example and retaining the minimum-player rules. The source images remain on disk.

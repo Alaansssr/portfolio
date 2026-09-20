@@ -11,7 +11,8 @@ export const projects = [
     type: 'sphere',
     color: '#4dabf7',
     title: 'The Arena',
-    description: 'UX system for diabetes relapse prevention.',
+    tagline: 'Turning a museum visit into a shared experience.',
+    description: 'Exploring how interaction design can turn visitors from observers into participants who discover, play and share what interests them.',
     Component: 'Project2',
   },
   {
