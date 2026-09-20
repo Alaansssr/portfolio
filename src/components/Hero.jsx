@@ -1,9 +1,17 @@
 import { Suspense, lazy, useCallback, useEffect, useRef, useState } from 'react'
 import { projects } from '../data/projects'
+import './Hero.css'
 
 const HeroScene = lazy(() => import('./HeroScene'))
 
 export default function Hero({ index, setIndex }) {
+  const [compact, setCompact] = useState(() => window.matchMedia('(max-width: 900px)').matches)
+  useEffect(() => {
+    const query = window.matchMedia('(max-width: 900px)')
+    const update = () => setCompact(query.matches)
+    query.addEventListener('change', update)
+    return () => query.removeEventListener('change', update)
+  }, [])
   const [sceneReady, setSceneReady] = useState(false)
   const handleSceneReady = useCallback(() => setSceneReady(true), [])
   const heroRef = useRef(null)
@@ -40,6 +48,7 @@ export default function Hero({ index, setIndex }) {
   return (
     <section
       ref={heroRef}
+      className="portfolio-hero"
       style={{
         height: '100vh',
         position: 'relative',
@@ -48,19 +57,22 @@ export default function Hero({ index, setIndex }) {
         transition: 'background 1s ease',
       }}
     >
+      <div className="hero-stage">
       {!sceneReady && (
-        <div aria-hidden="true" style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
+        <div className="hero-placeholder" aria-hidden="true" style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
           <img src="/images/hero-models-v2.webp" alt="" fetchPriority="high" width="1920" height="1080"
             style={{ position: 'absolute', height: '100%', width: 'auto', maxWidth: 'none', left: '50%', transform: 'translateX(-50%)' }} />
         </div>
       )}
       <div style={{ height: '100%', opacity: sceneReady ? 1 : 0 }}>
         <Suspense fallback={null}>
-          <HeroScene index={index} setIndex={setIndex} visible={visible} onReady={handleSceneReady} />
+          <HeroScene compact={compact} index={index} setIndex={setIndex} visible={visible} onReady={handleSceneReady} />
         </Suspense>
+      </div>
       </div>
 
       <div
+        className="hero-intro"
         style={{
           position: 'absolute',
           top: '64px',
@@ -91,7 +103,7 @@ export default function Hero({ index, setIndex }) {
             color: '#111',
           }}
         >
-          Alaa
+          Alaa{' '}
           <br />
           Suliman
         </h1>
@@ -110,7 +122,7 @@ export default function Hero({ index, setIndex }) {
           digital, physical and spatial experiences.
         </p>
 
-        <div style={{ marginTop: '32px' }}>
+        <div className="hero-contact" style={{ marginTop: '32px' }}>
           <a
             href="mailto:3la2suliman12345@gmail.com"
             style={{
@@ -131,6 +143,7 @@ export default function Hero({ index, setIndex }) {
       </div>
 
       <div
+        className="hero-project"
         style={{
           position: 'absolute',
           left: '60%',
@@ -143,7 +156,13 @@ export default function Hero({ index, setIndex }) {
           transition: 'opacity 0.25s ease',
         }}
       >
+        <nav className="hero-mobile-nav" aria-label="Choose a project">
+          <button type="button" aria-label="Previous project" onClick={() => setIndex((index + projects.length - 1) % projects.length)}>←</button>
+          <span aria-live="polite">{activeProject.title}</span>
+          <button type="button" aria-label="Next project" onClick={() => setIndex((index + 1) % projects.length)}>→</button>
+        </nav>
         <div
+          className="hero-desktop-title"
           style={{
             fontSize: 'clamp(24px, 3vw, 42px)',
             fontWeight: 600,

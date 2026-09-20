@@ -82,6 +82,7 @@ function ProjectModel({
   })
 
   const handlePointerDown = (e) => {
+    if (e.pointerType === 'touch') return
     e.stopPropagation()
     isDragging.current = true
 
@@ -110,6 +111,7 @@ function ProjectModel({
   }
 
   const handlePointerUp = (e) => {
+    if (!isDragging.current) return
     e.stopPropagation()
     isDragging.current = false
     e.target.releasePointerCapture(e.pointerId)
@@ -123,6 +125,7 @@ function ProjectModel({
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
+      onPointerCancel={() => { isDragging.current = false }}
     >
       <primitive object={scene} />
     </group>
@@ -172,7 +175,8 @@ function ModelByType({ p, isActive, scene }) {
   return null
 }
 
-function Strip({ index, setIndex, onReady }) {
+function Strip({ index, setIndex, onReady, compact }) {
+  const viewportWidth = useThree(state => state.viewport.width)
   const models = useLoader(GLTFLoader, modelPaths, configureLoader)
   const ref = useRef()
   const spacing = 6
@@ -193,8 +197,8 @@ function Strip({ index, setIndex, onReady }) {
         return (
           <group
             key={i}
-            position={[i * spacing + 1.8, 0, 0]}
-            scale={isActive ? 1.6 : 0.9}
+            position={[i * spacing + (compact ? 0 : 1.8), 0, 0]}
+            scale={compact ? Math.min(viewportWidth / 3.8, 1.6) * (isActive ? 1 : 0.6) : (isActive ? 1.6 : 0.9)}
             onClick={(e) => {
               e.stopPropagation()
               if (e.delta > 4) return
@@ -216,13 +220,13 @@ function Strip({ index, setIndex, onReady }) {
   )
 }
 
-export default function HeroScene({ index, setIndex, visible, onReady }) {
+export default function HeroScene({ index, setIndex, visible, onReady, compact }) {
   return (
-    <Canvas dpr={1} camera={{ position: [0, 0, 6] }} frameloop={visible ? 'always' : 'never'} raycaster={{ firstHitOnly: true }}>
+    <Canvas style={{ touchAction: 'pan-y' }} dpr={1} camera={{ position: [0, 0, 6] }} frameloop={visible ? 'always' : 'never'} raycaster={{ firstHitOnly: true }}>
       <ambientLight intensity={1.6} />
       <directionalLight position={[5, 5, 5]} intensity={0.8} />
       <Suspense fallback={null}>
-        <Strip index={index} setIndex={setIndex} onReady={onReady} />
+        <Strip compact={compact} index={index} setIndex={setIndex} onReady={onReady} />
       </Suspense>
     </Canvas>
   )

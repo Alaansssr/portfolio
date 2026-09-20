@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import './Project3.css'
 
 export default function Project3() {
   const coverRef = useRef(null)
@@ -18,7 +19,7 @@ export default function Project3() {
   }
 
   return (
-    <>
+    <article className="architecture-project">
       {/* COVER */}
       <section
         ref={coverRef}
@@ -259,6 +260,7 @@ export default function Project3() {
 
       {/* OVERVIEW */}
       <div
+        className="architecture-overview"
         style={{
           maxWidth: '1100px',
           margin: '120px auto',
@@ -291,6 +293,7 @@ export default function Project3() {
         </p>
         {/* PROJECT 1 */}
 <div
+  className="architecture-case"
   style={{
     maxWidth: '1100px',
     margin: '140px auto',
@@ -341,6 +344,7 @@ export default function Project3() {
 
 {/* 3D RENDERS */}
 <div
+  className="architecture-gallery"
   style={{
     display: 'grid',
     gridTemplateColumns: 'repeat(2, 1fr)',
@@ -389,6 +393,7 @@ export default function Project3() {
 </div>
 {/* PROJECT 2 */}
 <div
+  className="architecture-case"
   style={{
     maxWidth: '1100px',
     margin: '180px auto',
@@ -439,6 +444,7 @@ export default function Project3() {
 
   {/* 3D RENDERS */}
   <div
+    className="architecture-gallery"
     style={{
       display: 'grid',
       gridTemplateColumns: 'repeat(2, 1fr)',
@@ -544,6 +550,6 @@ export default function Project3() {
 </div>
 </div>
       </div>
-    </>
+    </article>
   )
 }

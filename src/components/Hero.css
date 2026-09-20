@@ -1,0 +1,24 @@
+.hero-stage { position: absolute; inset: 0; }
+.hero-mobile-nav { display: none; }
+@media (max-width: 900px) {
+  .portfolio-hero { height: auto!important; min-height: 100svh; display: flex; flex-direction: column; padding-top: max(28px,env(safe-area-inset-top)); box-sizing: border-box; }
+  .hero-intro { position: relative!important; top: auto!important; left: auto!important; max-width: none!important; padding: 0 7%; order: 0; }
+  .hero-intro > div:first-child { font-size: 11px!important; margin-bottom: 12px!important; }
+  .hero-intro h1 { font-size: clamp(38px,8vw,56px)!important; }
+  .hero-intro h1 br { display: none; }
+  .hero-intro > p { font-size: 15px!important; line-height: 1.6!important; max-width: 480px!important; margin-top: 16px!important; margin-bottom: 0!important; }
+  .hero-contact { margin-top: 18px!important; }
+  .hero-contact a { min-height: 44px; box-sizing: border-box; }
+  .hero-stage { position: relative; inset: auto; width: 100%; height: clamp(240px,40svh,380px); flex: 1 0 240px; order: 1; }
+  .hero-placeholder img { transform: translateX(-60%)!important; }
+  .hero-stage canvas,.hero-stage > div { touch-action: pan-y!important; }
+  .hero-project { position: relative!important; left: auto!important; top: auto!important; transform: none!important; order: 2; width: 100%; box-sizing: border-box; padding: 0 7% max(28px,env(safe-area-inset-bottom)); opacity: 1!important; }
+  .hero-desktop-title { display: none; }
+  .hero-mobile-nav { display: grid; grid-template-columns: 44px minmax(0,1fr) 44px; align-items: center; gap: 12px; max-width: 540px; margin: 0 auto 18px; }
+  .hero-mobile-nav span { font-size: clamp(19px,5vw,26px); font-weight: 600; line-height: 1.25; color: #222; }
+  .hero-mobile-nav button { width: 44px; height: 44px; border: 1px solid #ccc; border-radius: 50%; background: white; color: #222; font-size: 22px; cursor: pointer; touch-action: manipulation; }
+  .hero-mobile-nav button:focus-visible { outline: 3px solid #5f3fd3; outline-offset: 3px; }
+}
+@media (max-width:900px) and (orientation:landscape) {
+  .hero-stage { height: 300px; flex-basis: 300px; }
+}
