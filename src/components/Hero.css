@@ -15,10 +15,12 @@
   .hero-project { position: relative!important; left: auto!important; top: auto!important; transform: none!important; order: 2; width: 100%; box-sizing: border-box; padding: 0 7% max(28px,env(safe-area-inset-bottom)); opacity: 1!important; }
   .hero-desktop-title { display: none; }
   .hero-mobile-nav { display: grid; grid-template-columns: 44px minmax(0,1fr) 44px; align-items: center; gap: 12px; max-width: 540px; margin: 0 auto 18px; }
-  .hero-mobile-nav span { font-size: clamp(19px,5vw,26px); font-weight: 600; line-height: 1.25; color: #222; }
-  .hero-mobile-nav button { width: 44px; height: 44px; border: 1px solid #ccc; border-radius: 50%; background: white; color: #222; font-size: 22px; cursor: pointer; touch-action: manipulation; }
-  .hero-mobile-nav button:focus-visible { outline: 3px solid #5f3fd3; outline-offset: 3px; }
+  .hero-mobile-nav span { font-size: clamp(19px,5vw,26px); font-weight: 600; line-height: 1.25; color: #f5f5f2; }
+  .hero-mobile-nav button { width: 44px; height: 44px; border: 1px solid #52524e; border-radius: 50%; background: #171717; color: #f5f5f2; font-size: 22px; cursor: pointer; touch-action: manipulation; }
+  .hero-mobile-nav button:focus-visible { outline: 3px solid #b9a1ff; outline-offset: 3px; }
 }
 @media (max-width:900px) and (orientation:landscape) {
   .hero-stage { height: 300px; flex-basis: 300px; }
 }
+
+.hero-contact a:focus-visible { outline: 3px solid #b9a1ff; outline-offset: 4px; }

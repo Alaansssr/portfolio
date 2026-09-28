@@ -40,9 +40,9 @@ export default function Hero({ index, setIndex }) {
   }, [])
 
   const backgroundColors = [
-    'radial-gradient(circle at 60% 45%, rgba(255,120,0,0.10), #fff 55%)',
-    'radial-gradient(circle at 60% 45%, rgba(0,150,255,0.10), #fff 55%)',
-    'radial-gradient(circle at 60% 45%, rgba(120,255,180,0.10), #fff 55%)',
+    'radial-gradient(circle at 60% 45%, rgba(255,120,0,0.10), #080808 55%)',
+    'radial-gradient(circle at 60% 45%, rgba(0,150,255,0.10), #080808 55%)',
+    'radial-gradient(circle at 60% 45%, rgba(120,255,180,0.10), #080808 55%)',
   ]
 
   return (
@@ -87,7 +87,7 @@ export default function Hero({ index, setIndex }) {
             fontSize: '14px',
             letterSpacing: '3px',
             textTransform: 'uppercase',
-            color: '#777',
+            color: '#c8c8c3',
             marginBottom: '18px',
           }}
         >
@@ -100,7 +100,7 @@ export default function Hero({ index, setIndex }) {
             lineHeight: 1,
             margin: 0,
             fontWeight: 600,
-            color: '#111',
+            color: '#f5f5f2',
           }}
         >
           Alaa{' '}
@@ -112,7 +112,7 @@ export default function Hero({ index, setIndex }) {
           style={{
             fontSize: '18px',
             lineHeight: 1.7,
-            color: '#555',
+            color: '#c8c8c3',
             marginTop: '24px',
             marginBottom: '14px',
             maxWidth: '330px',
@@ -128,9 +128,9 @@ export default function Hero({ index, setIndex }) {
             style={{
               padding: '12px 20px',
               borderRadius: '999px',
-              border: '1px solid #ccc',
-              background: '#fff',
-              color: '#111',
+              border: '1px solid #52524e',
+              background: '#171717',
+              color: '#f5f5f2',
               fontSize: '14px',
               cursor: 'pointer',
               textDecoration: 'none',
@@ -166,7 +166,7 @@ export default function Hero({ index, setIndex }) {
           style={{
             fontSize: 'clamp(24px, 3vw, 42px)',
             fontWeight: 600,
-            color: '#222',
+            color: '#f5f5f2',
             marginBottom: '14px',
           }}
         >
@@ -176,7 +176,7 @@ export default function Hero({ index, setIndex }) {
         <p
           style={{
             margin: 0,
-            color: '#666',
+            color: '#c8c8c3',
             fontSize: '14px',
           }}
         >

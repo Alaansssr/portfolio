@@ -173,7 +173,7 @@ function JourneySymbol({ stage }) {
   return <svg viewBox="0 0 160 90" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true" focusable="false">
     {stage === 'arrive' && <>
       <path d="M65 28V13h30v15M65 62v15h30V62" />
-      <rect x="54" y="27" width="52" height="36" rx="15" fill="white" />
+      <rect x="54" y="27" width="52" height="36" rx="15" fill="var(--case-surface)" />
       <circle cx="71" cy="39" r="3" /><circle cx="89" cy="39" r="3" />
       <circle cx="71" cy="51" r="3" /><circle cx="89" cy="51" r="3" />
     </>}
@@ -246,6 +246,7 @@ export default function ProjectArena() {
         <ArenaImage name="arena-overview" alt="The four Arena interest groups: design, vintage cars, mechanical innovation, and racing heritage" sizes="100vw" />
       </figure>
 
+      <div className="case-band case-light ar-research-band">
       <section className="ar-container ar-section" aria-label="Why this idea">
         <SectionHeading number="01" label="Why this idea?" title="Give visitors a reason to participate.">
           The selected visitor reviews ask for more opportunities to do something, beyond reading and looking. I explored how a shared activity could extend that participation beyond the exhibits.
@@ -266,6 +267,7 @@ export default function ProjectArena() {
       </section>
 
       <MuseumReviews />
+      </div>
 
       <section className="ar-container ar-section" aria-label="Technologies and tools">
         <SectionHeading number="02" label="Technologies & tools" title="One bracelet. Two roles.">
@@ -285,6 +287,7 @@ export default function ProjectArena() {
         <p className="ar-note">The bracelet, beacon network, and restaurant installation describe the proposed system. The prototype below presents the game interaction.</p>
       </section>
 
+      <div className="case-band case-light">
       <section className="ar-container ar-section" aria-label="User journey">
         <SectionHeading number="03" label="User journey" title="Your museum journey becomes your team identity.">
           Visitors explore at their own pace. What catches their attention along the way shapes the team they join at the end of the visit.
@@ -345,6 +348,10 @@ export default function ProjectArena() {
             <div><span className="ar-kicker">03 / Tactical vote</span><h4>Change the race</h4><p>Teams vote to slow down another team, adding a tactical choice and another opportunity to make a decision together.</p></div>
           </div>
         </div>
+      </section>
+      </div>
+
+      <section className="ar-container ar-section" aria-label="Outcome and reflection">
         <div className="ar-two ar-reflection">
           <div><p className="ar-kicker">The finish line</p><h4>A shared moment of celebration.</h4><p>The concept ends with an on-screen celebration in the winning team’s color. A proposed restaurant reward extends the moment: the winner’s bracelet cycles through all four colors until staff redeem the reward.</p></div>
           <div><p className="ar-kicker">Reflection</p><h4>Designing beyond the exhibit.</h4><p>This project taught me to treat the whole visit as a design opportunity. The restaurant offered a place for individual discoveries to become discussion, decisions, and play. The concept proposes a new role for that everyday pause: a moment when visitors contribute to the experience themselves.</p></div>

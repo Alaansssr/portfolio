@@ -1,8 +1,18 @@
-.architecture-project img { max-width: 100%; height: auto; }
+.architecture-project { color: var(--case-ink); background: var(--case-bg); }
+.architecture-project img { display: block; max-width: 100%; height: auto; }
+.architecture-container { max-width: 1100px; margin-inline: auto; padding: 88px 24px; box-sizing: border-box; font-family: system-ui, sans-serif; }
+.architecture-container h2 { font-size: clamp(28px,4vw,48px); line-height: 1.2; margin: 0 0 24px; font-weight: 600; color: var(--case-ink); }
+.architecture-container p { font-size: 18px; line-height: 1.8; color: var(--case-muted); max-width: 760px; margin: 0; }
+.architecture-container figure { margin: 0; min-width: 0; }
+.architecture-documentation figure { margin-top: 48px; }
+.architecture-container img { width: 100%; border-radius: 18px; }
+.architecture-container figcaption { margin-top: 12px; font-size: 14px; line-height: 1.6; color: var(--case-muted); }
+.architecture-gallery { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; align-items: start; }
 @media(max-width:800px) {
-  .architecture-project .architecture-overview { margin: 48px auto!important; padding: 0!important; }
-  .architecture-project .architecture-case { margin: 56px auto!important; padding: 0!important; }
-  .architecture-project .architecture-gallery { grid-template-columns: minmax(0,1fr)!important; gap: 24px!important; }
-  .architecture-project .architecture-gallery img { width: 100%!important; }
-  .architecture-project p { font-size: 16px!important; line-height: 1.7!important; }
+  .architecture-container { padding: 48px 0; }
+  .architecture-gallery { grid-template-columns: minmax(0,1fr); }
+  .architecture-container p { font-size: 16px; line-height: 1.7; }
+  .architecture-documentation figure { margin-top: 28px; }
 }
+
+@media(min-width:801px) { .architecture-experience[aria-label="Waiting area renders"] .architecture-gallery > img:last-child { width: 83%; } }

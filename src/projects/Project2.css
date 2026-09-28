@@ -1,9 +1,9 @@
 .arena-project {
-  --ar-ink: #171717;
-  --ar-muted: #626262;
-  --ar-rule: #e2e2e2;
+  --ar-ink: var(--case-ink);
+  --ar-muted: var(--case-muted);
+  --ar-rule: var(--case-rule);
   color: var(--ar-ink);
-  background: white;
+  background: var(--case-bg);
   font-family: system-ui, sans-serif;
   font-size: 16px;
   line-height: 1.7;
@@ -15,9 +15,30 @@
 .ar-container { max-width: 1100px; margin-inline: auto; padding-inline: 20px; }
 .ar-section { padding-block: 70px; }
 .ar-banner { width: 100vw; margin-left: -10vw; height: 300px; background: #0a0a0a; overflow: hidden; position: relative; }
-.ar-lines { position: absolute; inset: 0; width: 200%; height: 300%; background: repeating-linear-gradient(90deg,transparent,transparent 30px,rgba(255,255,255,.12) 40px,transparent 44px); animation: arenaLines 6s linear infinite; }
-@keyframes arenaLines { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-.ar-banner-shade { position: absolute; inset: 0; background: linear-gradient(90deg,rgba(0,0,0,.9),rgba(0,0,0,.25),rgba(0,0,0,.9)); }
+.ar-lines { position: absolute; inset: -50% 0; transform: skewY(-12deg); pointer-events: none; }
+.ar-lines::before,.ar-lines::after { content: ''; position: absolute; inset: 0; width: calc(100% + 960px); background-repeat: repeat-x; will-change: transform; }
+.ar-lines::before {
+  background-image:
+    linear-gradient(90deg,transparent 8%,rgba(230,57,70,.18) 34%,#e63946 57%,transparent 58%),
+    linear-gradient(90deg,transparent 36%,rgba(29,85,215,.2) 58%,#1d55d7 81%,transparent 82%),
+    linear-gradient(90deg,transparent 2%,rgba(241,196,15,.2) 28%,#f1c40f 43%,transparent 44%),
+    linear-gradient(90deg,transparent 24%,rgba(29,185,84,.2) 49%,#1db954 74%,transparent 75%);
+  background-size: 960px 3px,960px 2px,960px 4px,960px 2px;
+  background-position: 0 28%,0 44%,0 60%,0 76%;
+  animation: arenaSpeed 2.8s linear infinite;
+}
+.ar-lines::after {
+  background-image:
+    linear-gradient(90deg,transparent 4%,rgba(230,57,70,.5) 70%,transparent 71%),
+    linear-gradient(90deg,transparent 27%,rgba(29,85,215,.55) 89%,transparent 90%),
+    linear-gradient(90deg,transparent 17%,rgba(241,196,15,.45) 60%,transparent 61%),
+    linear-gradient(90deg,transparent 12%,rgba(29,185,84,.5) 78%,transparent 79%);
+  background-size: 960px 1px;
+  background-position: 0 36%,0 52%,0 68%,0 84%;
+  animation: arenaSpeed 5s linear infinite;
+}
+@keyframes arenaSpeed { from { transform: translateX(0); } to { transform: translateX(-960px); } }
+.ar-banner-shade { position: absolute; inset: 0; background: linear-gradient(90deg,rgba(8,8,8,.82),rgba(8,8,8,.4) 28%,transparent 60%),linear-gradient(0deg,rgba(8,8,8,.45),transparent 35%,transparent 70%,rgba(8,8,8,.3)); }
 .ar-banner > span { position: relative; height: 100%; display: flex; align-items: center; padding-left: 50px; color: white; font-size: 22px; font-weight: 600; letter-spacing: 4px; }
 .ar-kicker { font-size: 11px; line-height: 1.5; text-transform: uppercase; letter-spacing: .1em; font-weight: 600; color: var(--ar-muted); }
 .ar-title-row { display: flex; justify-content: space-between; align-items: center; gap: 36px; margin-block: 16px 32px; }
@@ -34,7 +55,7 @@
 .ar-summary { display: grid; grid-template-columns: repeat(3,1fr); gap: 32px; margin-top: 46px; padding-bottom: 32px; border-bottom: 1px solid var(--ar-rule); }
 .ar-summary strong { display: block; font-weight: 500; font-size: 19px; margin-bottom: 4px; }
 .ar-summary span { font-size: 12px; color: var(--ar-muted); }
-.ar-overview { width: 100vw; margin-left: -10vw!important; background: black; }
+.ar-overview { width: 100vw; margin-left: -10vw!important; background: var(--case-bg); }
 .ar-overview img { width: 100%; height: 33vh; object-fit: contain; }
 .ar-heading { max-width: 820px; margin-bottom: 32px; }
 .ar-heading h3 { font-size: clamp(28px,3.2vw,43px); font-weight: 550; letter-spacing: -.035em; line-height: 1.2; margin: 12px 0 16px; }
@@ -94,11 +115,11 @@
   .ar-summary strong { font-size: 14px; }
   .ar-two,.ar-tools figure { grid-template-columns: 1fr; }
   .ar-tools figure { gap: 18px; }
-  .ar-tools img { height: auto; max-height: 420px; object-fit: contain; background: #f5f5f5; }
+  .ar-tools img { height: auto; max-height: 420px; object-fit: contain; background: var(--case-surface); }
   .ar-reflection { gap: 30px; }
   .ar-overview img { height: auto; min-height: 100px; }
 }
-@media(prefers-reduced-motion:reduce) { .ar-lines { animation: none; } }
+@media(prefers-reduced-motion:reduce) { .ar-lines::before,.ar-lines::after { animation: none; will-change: auto; } }
 
 .ar-title-row > p { max-width: 380px; }
 .ar-opening-summary { max-width: 760px; color: var(--ar-muted); font-size: clamp(18px,2vw,22px); line-height: 1.6; }
@@ -110,13 +131,13 @@
 .ar-journey-caption > span:last-child { font-size: 12px; color: var(--ar-muted); }
 .ar-journey-flow { list-style: none; display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 30px; padding: 0; margin: 0; }
 .ar-journey-flow > li { position: relative; display: flex; flex-direction: column; min-width: 0; }
-.ar-journey-flow > li:not(:last-child)::after { content: '→'; position: absolute; top: 62px; right: -24px; font-size: 22px; color: #777; }
-.ar-journey-flow svg { display: block; width: 100%; height: 110px; margin-block: 14px; background: #f6f6f4; border-radius: 10px; }
+.ar-journey-flow > li:not(:last-child)::after { content: '→'; position: absolute; top: 62px; right: -24px; font-size: 22px; color: var(--case-muted); }
+.ar-journey-flow svg { display: block; width: 100%; height: 110px; margin-block: 14px; background: var(--case-surface); border-radius: 10px; }
 .ar-journey-flow h4 { font-size: 16px; }
 .ar-journey-flow p { font-size: 13px; color: var(--ar-muted); margin-block: 12px 22px; }
 .ar-journey-result { border-top: 1px solid var(--ar-rule); padding-top: 12px; margin-top: auto; font-size: 12px; }
 .ar-journey-result > span { display: block; color: var(--ar-muted); font-size: 10px; margin-bottom: 5px; }
-.ar-journey-rule { margin-top: 30px!important; padding: 18px 20px; background: #f6f6f4; border-radius: 8px; font-size: 13px; color: var(--ar-muted); }
+.ar-journey-rule { margin-top: 30px!important; padding: 18px 20px; background: var(--case-surface); border-radius: 8px; font-size: 13px; color: var(--ar-muted); }
 .ar-journey-rule strong { color: var(--ar-ink); font-weight: 550; }
 @media(max-width:900px) {
   .ar-journey-flow { grid-template-columns: 1fr; gap: 40px; }

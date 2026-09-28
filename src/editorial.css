@@ -1,0 +1,33 @@
+:root {
+  background: #080808;
+  --case-bg: #080808;
+  --case-ink: #f5f5f2;
+  --case-muted: #c8c8c3;
+  --case-rule: #383836;
+  --case-surface: #171717;
+  --case-focus: #b9a1ff;
+}
+.case-light {
+  --case-bg: #f7f6f3;
+  --case-ink: #1b1b19;
+  --case-muted: #555550;
+  --case-rule: #d8d7d0;
+  --case-surface: #eeede7;
+  --case-focus: #6343bd;
+  --vp-ink: var(--case-ink);
+  --vp-muted: var(--case-muted);
+  --vp-rule: var(--case-rule);
+  --ar-ink: var(--case-ink);
+  --ar-muted: var(--case-muted);
+  --ar-rule: var(--case-rule);
+  color: var(--case-ink);
+}
+/* Extend the section surface to the viewport without moving its content or clipping sticky children. */
+.case-band { position: relative; isolation: isolate; background: var(--case-bg); }
+.case-band::before { content: ''; position: absolute; top: 0; bottom: 0; left: calc(50% - 50vw); width: 100vw; background: var(--case-bg); z-index: -1; pointer-events: none; }
+.ar-research-band { display: flow-root; padding-bottom: 70px; }
+.ar-research-band > div:last-child { margin-bottom: 0!important; }
+.arena-project [aria-label="Outcome and reflection"] .ar-reflection { margin-top: 0; padding-top: 0; border-top: 0; }
+@media(min-width:801px) {
+  .vp-section.case-band { padding-block: 88px; }
+}

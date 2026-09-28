@@ -1,5 +1,6 @@
 import { Suspense, lazy, useState } from 'react'
 import Hero from './components/Hero'
+import './editorial.css'
 import { projects } from './data/projects'
 
 const Project1 = lazy(() => import('./projects/Project1'))
@@ -30,14 +31,14 @@ export default function App() {
         style={{
           minHeight: '100vh',
           padding: '1px 10%',
-          background: 'white',
-          color: 'black',
+          background: 'var(--case-bg)',
+          color: 'var(--case-ink)',
           fontFamily: 'system-ui, sans-serif',
         }}
       >
         <Suspense
           fallback={
-            <div style={{ padding: '80px 0', color: '#777' }}>
+            <div style={{ padding: '80px 0', color: 'var(--case-muted)' }}>
               Loading project...
             </div>
           }

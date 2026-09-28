@@ -166,7 +166,7 @@ export default function Project1() {
         <ol className="vp-flow" aria-label="How the interaction flows"><li>Controller reads the map</li><li>Sends a vibration cue</li><li>Agent interprets &amp; moves</li><li>Both respond together</li></ol>
       </section>
 
-      <section className="vp-container vp-section" aria-labelledby="vp-process">
+      <section className="vp-container vp-section case-band case-light" aria-labelledby="vp-process">
         <div className="vp-heading"><span className="vp-kicker">03 / Development</span><h3 id="vp-process">From vibration to shared play.</h3><p>An exploration of vibration as a language led to a shared game. Three questions shaped the direction before campus mapping and prototyping in ProtoPie made it tangible.</p></div>
         <div className="vp-journey">
           <ol aria-label="Questions that shaped the project"><li>Can vibration communicate direction?</li><li>Where could haptic communication create a meaningful shared experience?</li><li>How could that become a game between two people?</li></ol>
@@ -221,7 +221,7 @@ export default function Project1() {
         </div>
       </section>
 
-      <section className="vp-container vp-section vp-testing" aria-labelledby="vp-testing-title">
+      <section className="vp-container vp-section vp-testing case-band case-light" aria-labelledby="vp-testing-title">
         <div className="vp-heading"><span className="vp-kicker">05 / Testing & learning</span><h3 id="vp-testing-title">From paper prototypes to shared play.</h3><p>Original project photographs show early tabletop sessions exploring navigation, vibration cues and cooperation.</p></div>
         <div className="vp-photo-grid">
           <Photo name="prototype-session" alt="A participant testing an input device beside a paper game map and vibration chart" caption="Exploring the relationship between input, vibration signals and a paper game map." />
