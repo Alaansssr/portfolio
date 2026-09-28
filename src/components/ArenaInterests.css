@@ -1,0 +1,36 @@
+.arena-interests { border-top: 1px solid var(--ar-rule); }
+.ai-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 24px; align-items: start; }
+.ai-card { min-width: 0; width: 100%; padding: 0; border: 0; background: transparent; color: var(--ar-ink); font: inherit; text-align: left; cursor: default; transition: opacity .35s ease; }
+.ai-card:focus-visible { outline: 2px solid var(--case-focus); outline-offset: 8px; border-radius: 10px; }
+.ai-object { display: flex; align-items: center; aspect-ratio: 5/4; position: relative; color: var(--interest-color); transform-origin: center; transition: transform .4s ease; }
+.ai-object::before { content: ''; position: absolute; inset: 18% 4%; background: radial-gradient(ellipse, var(--interest-color), transparent 68%); opacity: 0; transition: opacity .4s ease; pointer-events: none; }
+.ai-object svg { position: relative; display: block; width: 100%; height: auto; overflow: visible; opacity: .72; filter: drop-shadow(0 0 0 transparent); transition: opacity .4s ease, filter .4s ease; }
+.ai-title { display: block; text-align: center; padding-top: 20px; font-size: 16px; line-height: 1.4; font-weight: 550; }
+.ai-detail { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows .35s ease,opacity .35s ease; }
+.ai-detail > span { overflow: hidden; min-height: 0; font-size: 13px; line-height: 1.7; color: var(--ar-muted); }
+.ai-card:is(:hover, :focus-visible) .ai-object { transform: translateY(-5px) scale(1.025); }
+.ai-card:is(:hover, :focus-visible) .ai-object::before { opacity: .14; }
+.ai-card:is(:hover, :focus-visible) svg { opacity: 1; filter: drop-shadow(0 0 3px currentColor) drop-shadow(0 0 9px currentColor); }
+.ai-card:is(:hover, :focus-visible) .ai-detail { grid-template-rows: 1fr; opacity: 1; margin-top: 12px; }
+@media(max-width:1000px) { .ai-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 32px 24px; } }
+@media(max-width:500px) { .ai-grid { grid-template-columns: minmax(0,1fr); gap: 32px; } .ai-object { aspect-ratio: 2/1; } .ai-title { padding-top: 14px; } }
+@media(prefers-reduced-motion:reduce) { .arena-interests *, .arena-interests *::before { transition: none!important; } .ai-card:is(:hover, :focus-visible) .ai-object { transform: none; } }
+@media(hover:none) { .ai-detail { grid-template-rows: 1fr; opacity: 1; margin-top: 12px; } }
+
+/* Theme-specific accents only run while the illustration is being explored. */
+.ai-motion { opacity: 0; transition: opacity .3s ease; pointer-events: none; }
+.ai-card:is(:hover, :focus-visible) .ai-motion { opacity: 1; }
+.ai-card:is(:hover, :focus-visible) .ai-racing-wheel { animation: ai-wheel-spin .24s linear infinite; }
+.ai-smoke { filter: blur(3px); }
+.ai-card:is(:hover, :focus-visible) .ai-smoke-puff { animation: ai-tire-smoke 1.35s ease-out infinite; animation-delay: var(--puff-delay); }
+.ai-card:is(:hover, :focus-visible) .ai-tool-one { animation: ai-tool-appear 2.8s ease-in-out infinite; }
+.ai-card:is(:hover, :focus-visible) .ai-tool-two { animation: ai-tool-appear 2.8s ease-in-out -1.4s infinite; }
+.ai-card:is(:hover, :focus-visible) .ai-design-sweep { animation: ai-body-sweep 2.6s ease-in-out infinite; }
+.ai-heritage-detail { stroke-dasharray: 160; stroke-dashoffset: 160; }
+.ai-card:is(:hover, :focus-visible) .ai-heritage-detail { animation: ai-heritage-draw 3.5s ease-in-out infinite; }
+@keyframes ai-wheel-spin { to { transform: rotate(360deg); } }
+@keyframes ai-tire-smoke { 0% { opacity: 0; transform: translate(0,0) scale(1); } 20% { opacity: .35; } 100% { opacity: 0; transform: translate(-40px,-14px) scale(1.15); } }
+@keyframes ai-tool-appear { 0%,100% { opacity: 0; } 30%,60% { opacity: .9; } }
+@keyframes ai-body-sweep { 0%,10% { opacity: 0; transform: translateX(-45px); } 35% { opacity: .65; } 85%,100% { opacity: 0; transform: translateX(145px); } }
+@keyframes ai-heritage-draw { 0% { opacity: 0; stroke-dashoffset: 160; } 25% { opacity: .8; } 65% { opacity: .8; stroke-dashoffset: 0; } 100% { opacity: 0; stroke-dashoffset: 0; } }
+@media(prefers-reduced-motion:reduce) { .arena-interests * { animation: none!important; } .ai-card:is(:hover, :focus-visible) .ai-motion { opacity: 0; } }

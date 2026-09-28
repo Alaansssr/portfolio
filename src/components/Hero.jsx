@@ -47,6 +47,9 @@ export default function Hero({ index, setIndex }) {
 
   return (
     <section
+      id="projects"
+      tabIndex={-1}
+      aria-label="Project selection"
       ref={heroRef}
       className="portfolio-hero"
       style={{

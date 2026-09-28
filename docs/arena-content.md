@@ -40,3 +40,9 @@ The opening now asks “Can a museum become a social experience?” and leads wi
 ## Journey diagram
 
 At the user’s request, the two ambiguous journey storyboards are no longer displayed. A responsive four-stage HTML/SVG diagram replaces the images and duplicated step list in the same section. It explains check-in → exhibit dwell time → team formation → voting, using a clearly labeled racing/yellow example and retaining the minimum-player rules. The source images remain on disk.
+
+## Interactive interests
+
+The original four-circle overview image is replaced by four responsive interest cards in its existing position. Categories retain their order and team colors. Lightweight SVG car outlines represent a contemporary coupe, a vintage car, an engineering study and a racing car. Each retains its theme color and glows like neon on hover or keyboard focus. These are stylized illustrations, not depictions of specific museum vehicles.
+
+Mouse hover and keyboard focus reveal each explanation. The themes are informational, with no click selection or selected state. Both the invitation prompt and the transition question are removed. On devices without hover, explanations remain visible so touch users can read them without selecting anything. Reduced-motion and visible keyboard-focus support remain.

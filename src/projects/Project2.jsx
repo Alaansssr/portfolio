@@ -1,4 +1,5 @@
 import ViewportVideo from '../components/ViewportVideo'
+import ArenaInterests from '../components/ArenaInterests'
 import { useEffect, useRef, useState } from 'react'
 import './Project2.css'
 import { projects } from '../data/projects'
@@ -242,9 +243,7 @@ export default function ProjectArena() {
         </div>
       </section>
 
-      <figure className="ar-overview">
-        <ArenaImage name="arena-overview" alt="The four Arena interest groups: design, vintage cars, mechanical innovation, and racing heritage" sizes="100vw" />
-      </figure>
+      <ArenaInterests />
 
       <div className="case-band case-light ar-research-band">
       <section className="ar-container ar-section" aria-label="Why this idea">
@@ -278,13 +277,7 @@ export default function ProjectArena() {
           <figure><ArenaImage name="beacon" alt="Illustration of a Bluetooth beacon in a museum" sizes="(max-width: 800px) 80vw, 350px" /><figcaption><h4>Bluetooth beacons</h4><p>Beacons placed around the exhibits would detect proximity and time spent in each zone. The concept uses dwell time as a signal of interest to determine the bracelet’s color.</p></figcaption></figure>
           <figure><ArenaImage name="screens" alt="Concept visualization of restaurant visitors playing together with colored bracelets and a shared screen" sizes="(max-width: 800px) 80vw, 350px" /><figcaption><h4>Restaurant screens</h4><p>A shared display presents questions, answer options, and the race. Each team’s car uses its bracelet color, turning individual votes into progress everyone can follow.</p></figcaption></figure>
         </div>
-        <div className="ar-palette" aria-label="Interest and team colors">
-          <div><i style={{ background: '#e63946' }} /><span>Red<strong>Design</strong></span></div>
-          <div><i style={{ background: '#1d55d7' }} /><span>Blue<strong>Mechanical innovation</strong></span></div>
-          <div><i style={{ background: '#f1c40f' }} /><span>Yellow<strong>Racing heritage</strong></span></div>
-          <div><i style={{ background: '#1db954' }} /><span>Green<strong>Vintage cars</strong></span></div>
-        </div>
-        <p className="ar-note">The bracelet, beacon network, and restaurant installation describe the proposed system. The prototype below presents the game interaction.</p>
+
       </section>
 
       <div className="case-band case-light">
@@ -333,13 +326,9 @@ export default function ProjectArena() {
           The prototype shows how trivia, team decisions, and race feedback come together. Each visitor submits an answer with the bracelet; the team’s majority vote becomes its answer, giving players a reason to discuss before choosing.
         </SectionHeading>
         <figure className="ar-video">
-          <ViewportVideo src="/videos/arena-prototype.mp4" poster="/images/arena/prototype-poster.webp" autoPlay loop muted playsInline aria-label="Arena game interaction prototype" />
+          <ViewportVideo controls src="/videos/arena-prototype.mp4" poster="/images/arena/prototype-poster.webp" autoPlay loop muted playsInline aria-label="Arena game interaction prototype" />
           <figcaption>Game interaction prototype — from the question to the team’s response and shared race feedback.</figcaption>
         </figure>
-        <div className="ar-two ar-prototype-images">
-          <figure><ArenaImage name="prototype1" alt="Arena design system showing Helvetica Neue, black and white, and the four team colors" /><figcaption>A restrained black-and-white interface, with color reserved for team identity.</figcaption></figure>
-          <figure><ArenaImage name="prototype2" alt="Interaction goals: starting conversations through shared colors and creating a social game atmosphere" /><figcaption>The intended social experience: shared interests become a starting point for conversation.</figcaption></figure>
-        </div>
         <div className="ar-rounds">
           <h4>Three phases, different ways to contribute</h4>
           <div className="ar-three">
@@ -347,6 +336,10 @@ export default function ProjectArena() {
             <div><span className="ar-kicker">02 / Pit stop</span><h4>Solve the puzzle</h4><p>Visual challenges add a different kind of contribution. A correct solution earns a +2 boost for the team’s race.</p></div>
             <div><span className="ar-kicker">03 / Tactical vote</span><h4>Change the race</h4><p>Teams vote to slow down another team, adding a tactical choice and another opportunity to make a decision together.</p></div>
           </div>
+        </div>
+        <div className="ar-prototype-images">
+          <figure><ArenaImage name="prototype1" sizes="(max-width: 1125px) 80vw, 900px" alt="Arena design system showing Helvetica Neue, black and white, and the four team colors" /><figcaption>A restrained black-and-white interface, with color reserved for team identity.</figcaption></figure>
+          <figure><ArenaImage name="prototype2" sizes="(max-width: 1125px) 80vw, 900px" alt="Interaction goals: starting conversations through shared colors and creating a social game atmosphere" /><figcaption>The intended social experience: shared interests become a starting point for conversation.</figcaption></figure>
         </div>
       </section>
       </div>

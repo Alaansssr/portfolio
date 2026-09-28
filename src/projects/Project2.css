@@ -80,8 +80,8 @@
 .arena-project figure:not(.ar-tools figure) figcaption { padding-top: 12px; color: var(--ar-muted); font-size: 12px; line-height: 1.6; }
 .ar-video { max-width: 900px; margin-inline: auto!important; }
 .ar-video video { display: block; width: 100%; aspect-ratio: 16/9; object-fit: contain; border-radius: 12px; background: #111; }
-.ar-prototype-images { max-width: 900px; margin: 32px auto 0; }
-.ar-rounds { padding-top: 32px; margin-top: 40px; border-top: 1px solid var(--ar-rule); }
+.ar-prototype-images { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; max-width: 900px; margin: 32px auto 0; }
+.ar-rounds { padding-bottom: 32px; margin-top: 40px; border-bottom: 1px solid var(--ar-rule); }
 .ar-rounds > h4 { margin-bottom: 26px; }
 .ar-rounds .ar-three h4 { margin-top: 10px; }
 .ar-reflection { border-top: 1px solid var(--ar-rule); padding-top: 32px; margin-top: 40px; gap: 48px; }

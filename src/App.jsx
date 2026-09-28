@@ -44,6 +44,19 @@ export default function App() {
           }
         >
           <ActiveProjectDetails />
+          <nav className="case-return" aria-label="Case study navigation">
+            <a href="#projects" onClick={event => {
+              event.preventDefault()
+              const target = document.getElementById('projects')
+              target?.focus({ preventScroll: true })
+              target?.scrollIntoView({ behavior: 'instant', block: 'start' })
+              if (target && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                target.animate([{ opacity: .65 }, { opacity: 1 }], { duration: 220, easing: 'ease-out' })
+              }
+            }}>
+              <span>Back to projects</span><span aria-hidden="true">↑</span>
+            </a>
+          </nav>
         </Suspense>
       </section>
     </main>

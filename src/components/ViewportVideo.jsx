@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 
-// Load near the viewport and play only while visible, without playback controls.
-export default function ViewportVideo({ src, autoPlay = true, style, ...props }) {
+// Load near the viewport and play while visible; controls are opt-in.
+export default function ViewportVideo({ src, autoPlay = true, controls = false, style, ...props }) {
   const ref = useRef(null)
 
   useEffect(() => {
@@ -45,8 +45,8 @@ export default function ViewportVideo({ src, autoPlay = true, style, ...props })
   }, [src, autoPlay])
 
   return (
-    <video {...props} ref={ref} preload="none" controls={false} muted loop playsInline
-      disablePictureInPicture disableRemotePlayback tabIndex={-1}
-      style={{ ...style, pointerEvents: 'none' }} />
+    <video {...props} ref={ref} preload="none" controls={controls} muted loop playsInline
+      disablePictureInPicture disableRemotePlayback tabIndex={controls ? 0 : -1}
+      style={{ ...style, pointerEvents: controls ? 'auto' : 'none' }} />
   )
 }
