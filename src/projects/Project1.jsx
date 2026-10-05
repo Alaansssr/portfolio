@@ -187,10 +187,9 @@ export default function Project1() {
           <div className="vp-aspect-top"><p className="vp-kicker">04 / Visual & interaction system</p><span className="vp-scroll-hint">Scroll to explore · or choose a chapter</span></div>
           <nav className="vp-aspect-nav" aria-label="Project chapters">
             {aspects.map((item, index) => (
-              <button key={item.label} type="button" aria-current={!compact && selectedAspect === index ? 'step' : undefined}
+              <button key={item.label} type="button" aria-label={item.label} aria-current={!compact && selectedAspect === index ? 'step' : undefined}
                 onClick={() => selectAspect(index)} aria-controls={compact ? `vp-chapter-${index}` : 'vp-active-explanation'}>
-                <img src={item.image} loading="lazy" decoding="async" alt="" />
-                <span>{item.label}</span>
+                <span className="vp-chapter-thumbnail"><img src={item.image} loading="lazy" decoding="async" alt="" /></span>
               </button>
             ))}
           </nav>
