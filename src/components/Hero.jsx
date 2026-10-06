@@ -51,7 +51,7 @@ export default function Hero({ index, setIndex }) {
         height: '100vh',
         position: 'relative',
         overflow: 'hidden',
-        background: 'radial-gradient(circle at 60% 45%, rgba(245,245,242,0.10), #080808 55%)',
+        background: 'radial-gradient(circle at 60% 45%, rgba(245,245,242,0.10), #080808 32%)',
       }}
     >
       <PortfolioHeader page="projects" />

@@ -1,8 +1,9 @@
-.hero-header { position: absolute; top: 64px; left: 64px; right: 64px; z-index: 30; display: flex; align-items: center; justify-content: space-between; gap: 16px; color: #c8c8c3; font-family: system-ui, sans-serif; font-size: 14px; line-height: 1.5; letter-spacing: 3px; text-transform: uppercase; }
+.hero-header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 24px 64px; box-sizing: border-box; background: #080808; --header-active: #fff; display: flex; align-items: center; justify-content: space-between; gap: 16px; color: #c8c8c3; font-family: system-ui, sans-serif; font-size: 14px; line-height: 1.5; letter-spacing: 3px; text-transform: uppercase; }
+.hero-header-light { background: #f7f6f3; color: #555550; --header-active: #1b1b19; }
 .hero-actions { display: flex; align-items: center; gap: 10px; }
 .hero-actions :is(a, button) { color: inherit; font: inherit; letter-spacing: inherit; text-decoration: none; }
 .hero-actions :is(a, button):hover { text-decoration: underline; text-underline-offset: 4px; }
-.hero-actions a[aria-current] { color: #fff; text-decoration: underline; text-underline-offset: 5px; }
+.hero-actions a[aria-current] { color: var(--header-active); text-decoration: underline; text-underline-offset: 5px; }
 .hero-actions :is(a, button):focus-visible { outline: 3px solid #b9a1ff; outline-offset: 4px; }
 .hero-stage { position: absolute; inset: 0; }
 .hero-mobile-nav { display: none; }
@@ -20,9 +21,9 @@
   .hero-scroll-arrow { animation: none; }
 }
 @media (max-width: 900px) {
-  .portfolio-hero { height: auto!important; min-height: 100svh; display: flex; flex-direction: column; padding-top: max(28px,env(safe-area-inset-top)); box-sizing: border-box; }
+  .portfolio-hero { height: auto!important; min-height: 100svh; display: flex; flex-direction: column; padding-top: calc(max(28px,env(safe-area-inset-top)) + 40px); box-sizing: border-box; }
   .hero-intro { position: relative!important; top: auto!important; left: auto!important; max-width: none!important; padding: 0 7%; order: 0; }
-  .hero-header { position: relative; top: auto; left: auto; right: auto; order: -1; margin: 0 7% 12px; font-size: 11px; letter-spacing: clamp(1px, .35vw, 3px); }
+  .hero-header { padding: max(28px,env(safe-area-inset-top)) 7% 12px; font-size: 11px; letter-spacing: clamp(1px, .35vw, 3px); }
   .hero-intro h1 { font-size: clamp(38px,8vw,56px)!important; }
   .hero-intro h1 br { display: none; }
   .hero-intro > p { font-size: 15px!important; line-height: 1.6!important; max-width: 480px!important; margin-top: 16px!important; margin-bottom: 0!important; }
@@ -55,6 +56,6 @@
 .about-details dt { color: #f5f5f2; font-weight: 600; }
 .about-details dd { margin: 4px 0 0; }
 @media (max-width: 900px) {
-  .about-page { padding: max(28px, env(safe-area-inset-top)) 0 48px; }
+  .about-page { padding: calc(max(28px, env(safe-area-inset-top)) + 40px) 0 48px; }
   .about-content { padding: 40px 7% 0; }
 }
