@@ -8,8 +8,16 @@ body,
 }
 
 body {
+  font-family: system-ui, sans-serif;
   overflow-x: hidden;
   overflow-y: auto;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
 }
 @keyframes pulse {
   0% {

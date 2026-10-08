@@ -35,10 +35,8 @@ export default function PortfolioHeader({ page }) {
     <header ref={headerRef} className={`hero-header${light ? ' hero-header-light' : ''}`}>
       <span>Portfolio</span>
       <nav className="hero-actions" aria-label="Main navigation">
-        <a href="#projects" aria-current={page === 'projects' ? 'page' : undefined}>Projects</a>
-        <span aria-hidden="true">-</span>
+        <a href="#projects" aria-current={page === 'projects' ? 'page' : undefined}>Home</a>
         <a href="#about" aria-current={page === 'about' ? 'page' : undefined}>About</a>
-        <span aria-hidden="true">-</span>
         <a href="mailto:3la2suliman12345@gmail.com">Contact</a>
       </nav>
     </header>
