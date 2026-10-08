@@ -1,6 +1,6 @@
 .architecture-project { color: var(--case-ink); background: var(--case-bg); }
 .architecture-project img { display: block; max-width: 100%; height: auto; }
-.architecture-container { max-width: 1100px; margin-inline: auto; padding: 88px 24px; box-sizing: border-box; font-family: system-ui, sans-serif; }
+.architecture-container { max-width: 1100px; margin-inline: auto; padding: 88px 24px; box-sizing: border-box; }
 .architecture-container h2 { font-size: clamp(28px,4vw,48px); line-height: 1.2; margin: 0 0 24px; font-weight: 600; color: var(--case-ink); }
 .architecture-container p { font-size: 18px; line-height: 1.8; color: var(--case-muted); max-width: 760px; margin: 0; }
 .architecture-container figure { margin: 0; min-width: 0; }

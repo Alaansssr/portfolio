@@ -96,7 +96,6 @@ export default function Hero({ index, setIndex }) {
           left: '64px',
           zIndex: 30,
           maxWidth: '420px',
-          fontFamily: 'system-ui, sans-serif',
         }}
       >
         <h1
@@ -116,6 +115,7 @@ export default function Hero({ index, setIndex }) {
         <p
           style={{
             fontSize: '18px',
+            fontWeight: 400,
             lineHeight: 1.7,
             color: '#c8c8c3',
             marginTop: '24px',
@@ -123,8 +123,7 @@ export default function Hero({ index, setIndex }) {
             maxWidth: '330px',
           }}
         >
-          Interaction designer exploring new ways for people to connect through
-          digital, physical and spatial experiences.
+          Designer working across visual, digital, and spatial design.
         </p>
 
       </div>
@@ -140,7 +139,6 @@ export default function Hero({ index, setIndex }) {
           transform: 'translateX(-50%)',
           zIndex: 20,
           textAlign: 'center',
-          fontFamily: 'system-ui, sans-serif',
           opacity: displayIndex === index ? 1 : 0,
           transition: 'opacity 0.25s ease',
         }}
@@ -167,6 +165,7 @@ export default function Hero({ index, setIndex }) {
             margin: 0,
             color: '#c8c8c3',
             fontSize: '14px',
+            fontWeight: 400,
           }}
         >
           Scroll to explore <span className="hero-scroll-arrow" aria-hidden="true">↓</span>

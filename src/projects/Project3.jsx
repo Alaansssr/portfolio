@@ -26,13 +26,13 @@ export default function Project3() {
         onPointerMove={handlePointerMove}
         style={{
           width: '100vw',
-          height: '50vh',
           background: '#0b0b0b',
           position: 'relative',
           overflow: 'hidden',
           marginLeft: 'calc(50% - 50vw)',
         }}
       >
+        <div aria-hidden="true" style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
         {/* GRID */}
         <div
           style={{
@@ -256,11 +256,12 @@ export default function Project3() {
             pointerEvents: 'none',
           }}
         />
-      </section>
-
-      <section className="architecture-container architecture-intro">
+        </div>
+        <div aria-hidden="true" style={{ height: '50vh' }} />
+      <section className="architecture-container architecture-intro" style={{ position: 'relative', width: '80%' }}>
         <h2>Overview</h2>
         <p>A selection of architectural visualization projects, exploring the transition from detailed 2D plans to immersive 3D spatial representations.</p>
+      </section>
       </section>
 
       <section className="architecture-container architecture-documentation case-band case-light">

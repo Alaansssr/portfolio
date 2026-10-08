@@ -47,7 +47,6 @@ export default function App() {
           padding: '1px 10%',
           background: 'var(--case-bg)',
           color: 'var(--case-ink)',
-          fontFamily: 'system-ui, sans-serif',
         }}
       >
         <Suspense
