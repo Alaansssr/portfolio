@@ -21,6 +21,24 @@ export default function Hero({ index, setIndex }) {
   const activeProject = projects[displayIndex]
 
   useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return
+      if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return
+      if (event.target instanceof Element && event.target.closest('input, textarea, select, [contenteditable]:not([contenteditable="false"]), [role="slider"]')) return
+
+      const bounds = heroRef.current?.getBoundingClientRect()
+      if (!bounds || bounds.top > window.innerHeight / 2 || bounds.bottom <= window.innerHeight / 2) return
+
+      event.preventDefault()
+      const direction = event.key === 'ArrowRight' ? 1 : -1
+      setIndex((current) => (current + direction + projects.length) % projects.length)
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [setIndex])
+
+  useEffect(() => {
     const timer = setTimeout(() => setDisplayIndex(index), 300)
     return () => clearTimeout(timer)
   }, [index])

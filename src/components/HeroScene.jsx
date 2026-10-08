@@ -1,7 +1,7 @@
 import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js'
-import { Suspense, useEffect, useRef } from 'react'
+import { Suspense, useEffect, useRef, useState } from 'react'
 import { MeshBVH, acceleratedRaycast } from 'three-mesh-bvh'
 import { projects } from '../data/projects'
 
@@ -46,6 +46,8 @@ function ProjectModel({
   }, [scene])
 
   const modelRef = useRef()
+  const materialsRef = useRef([])
+  const [initialOpacity] = useState(opacity)
   const isDragging = useRef(false)
   const animationStart = useRef(null)
   const lastPointer = useRef({ x: 0, y: 0 })
@@ -61,15 +63,23 @@ function ProjectModel({
       if (child.isMesh) {
         const materials = Array.isArray(child.material) ? child.material : [child.material]
         materials.forEach((material) => {
-          material.transparent = opacity < 1
-          material.opacity = opacity
+          material.transparent = true
+          material.opacity = initialOpacity
+          material.needsUpdate = true
+          materialsRef.current.push(material)
         })
       }
     })
-  }, [scene, opacity])
+    return () => { materialsRef.current = [] }
+  }, [scene, initialOpacity])
 
-  useFrame(({ clock }) => {
+  useFrame(({ clock }, delta) => {
     if (!modelRef.current) return
+
+    const blend = 1 - Math.exp(-7 * delta)
+    materialsRef.current.forEach((material) => {
+      material.opacity += (opacity - material.opacity) * blend
+    })
 
     if (animationStart.current === null) animationStart.current = clock.getElapsedTime()
     const t = clock.getElapsedTime() - animationStart.current
@@ -175,6 +185,19 @@ function ModelByType({ p, isActive, scene }) {
   return null
 }
 
+function ProjectIcon({ scale, position, children, ...handlers }) {
+  const ref = useRef()
+  const [initialScale] = useState(scale)
+
+  useFrame((_, delta) => {
+    if (!ref.current) return
+    const next = ref.current.scale.x + (scale - ref.current.scale.x) * (1 - Math.exp(-7 * delta))
+    ref.current.scale.setScalar(next)
+  })
+
+  return <group ref={ref} position={position} scale={initialScale} {...handlers}>{children}</group>
+}
+
 function Strip({ index, setIndex, onReady, compact }) {
   const viewportWidth = useThree(state => state.viewport.width)
   const models = useLoader(GLTFLoader, modelPaths, configureLoader)
@@ -195,7 +218,7 @@ function Strip({ index, setIndex, onReady, compact }) {
         const isActive = i === index
 
         return (
-          <group
+          <ProjectIcon
             key={i}
             position={[i * spacing + (compact ? 0 : 1.8), 0, 0]}
             scale={compact ? Math.min(viewportWidth / 3.8, 1.6) * (isActive ? 1 : 0.6) : (isActive ? 1.6 : 0.9)}
@@ -212,7 +235,7 @@ function Strip({ index, setIndex, onReady, compact }) {
             }}
           >
             <ModelByType p={p} isActive={isActive} scene={models[i].scene} />
-          </group>
+          </ProjectIcon>
         )
       })}
       <SceneReady onReady={onReady} />

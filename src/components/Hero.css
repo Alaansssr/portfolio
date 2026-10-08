@@ -1,3 +1,8 @@
+.portfolio-hero:focus,
+.hero-stage canvas:focus {
+  outline: none;
+}
+
 .hero-header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 24px 64px; box-sizing: border-box; background: #080808; --header-active: #fff; display: flex; align-items: center; justify-content: space-between; gap: 16px; color: #c8c8c3; font-family: system-ui, sans-serif; font-size: 14px; line-height: 1.5; letter-spacing: 3px; text-transform: uppercase; }
 .hero-header-light { background: #f7f6f3; color: #555550; --header-active: #1b1b19; }
 .hero-actions { display: flex; align-items: center; gap: 36px; }
