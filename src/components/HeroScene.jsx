@@ -85,6 +85,14 @@ function ProjectModel({
     const t = clock.getElapsedTime() - animationStart.current
     const idleShake = isActive ? Math.sin(t * 0.8) * 0.15 : 0
 
+    // Keep rotation under the pointer while dragging, then ease back to the resting pose.
+    if (!isDragging.current) {
+      const returnBlend = 1 - Math.exp(-3 * Math.min(delta, 0.05))
+      rotation.current.x += (0.4 - rotation.current.x) * returnBlend
+      rotation.current.y += (-0.45 - rotation.current.y) * returnBlend
+      rotation.current.z += (0 - rotation.current.z) * returnBlend
+    }
+
     modelRef.current.rotation.x = rotation.current.x + rotationOffset[0]
     modelRef.current.rotation.y =
       rotation.current.y + rotationOffset[1] + idleShake
@@ -136,6 +144,7 @@ function ProjectModel({
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerCancel={() => { isDragging.current = false }}
+      onLostPointerCapture={() => { isDragging.current = false }}
     >
       <primitive object={scene} />
     </group>

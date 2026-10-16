@@ -96,7 +96,13 @@ export default function Project1() {
       if (!stickySectionRef.current) return
       const rect = stickySectionRef.current.getBoundingClientRect()
       const progress = Math.min(Math.max(-rect.top / Math.max(1, rect.height - window.innerHeight), 0), 1)
-      setSelectedAspect(Math.min(aspects.length - 1, Math.floor(progress * aspects.length)))
+      const position = progress * aspects.length
+      setSelectedAspect(current => {
+        // A small dead zone keeps trackpad movement near a boundary from toggling chapters.
+        if (position >= current && position < current + 1.08) return current
+        if (position < current && position > current - 0.08) return current
+        return Math.min(aspects.length - 1, Math.floor(position))
+      })
     }
     const schedule = () => { if (!frame) frame = requestAnimationFrame(update) }
     window.addEventListener('scroll', schedule, { passive: true })
@@ -111,16 +117,15 @@ export default function Project1() {
 
   const selectAspect = (index) => {
     if (compact) {
-      document.getElementById(`vp-chapter-${index}`)?.scrollIntoView({ behavior: 'instant', block: 'start' })
+      document.getElementById(`vp-chapter-${index}`)?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' })
       return
     }
     const section = stickySectionRef.current
     const scrollRange = section.offsetHeight - window.innerHeight
     window.scrollTo({
       top: window.scrollY + section.getBoundingClientRect().top + scrollRange * ((index + 0.12) / aspects.length),
-      behavior: 'instant',
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
     })
-    setSelectedAspect(index)
   }
 
   return (
@@ -140,12 +145,6 @@ export default function Project1() {
             <p>Designed for Freshers’ Week, VIBROFEST explores whether shared challenges and unfamiliar forms of communication can help new students connect.</p>
           </div>
         </div>
-        <dl className="vp-meta">
-          <div><dt>Designed by</dt><dd>Alaa Suliman</dd></div>
-          <div><dt>Context</dt><dd>Rhein-Waal Hochschule<br />Design &amp; Interaction Project 2</dd></div>
-          <div><dt>Designed for</dt><dd>University students<br />Freshers’ Week</dd></div>
-          <div><dt>Project presentation</dt><dd>27 January 2026<br />Winter semester 2025</dd></div>
-        </dl>
         <div className="vp-summary-line"><span><strong>2 players</strong> Different roles</span><span><strong>1 shared goal</strong> Cooperative play</span><span><strong>Haptic feedback</strong> A physical language</span></div>
       </section>
 
@@ -195,17 +194,17 @@ export default function Project1() {
           </nav>
           {!compact ? <div className="vp-aspect-body">
             <div className="vp-media-window">
-              <div className="vp-media-strip" style={{ transform: `translateX(-${selectedAspect * 25}%)` }}>
-                <div className="vp-media-slide" inert={selectedAspect !== 0}><img src={`${assetRoot}design-language-1200.webp`} loading="lazy" decoding="async" alt="Design board showing connecting blobs, the walking wordmark, textures and typography" /></div>
+              <div className="vp-media-strip">
+                <div className="vp-media-slide" data-active={selectedAspect === 0} inert={selectedAspect !== 0}><img src={`${assetRoot}design-language-1200.webp`} loading="lazy" decoding="async" alt="Design board showing connecting blobs, the walking wordmark, textures and typography" /></div>
                 {aspects.slice(1).map((aspect, index) => (
-                  <div className="vp-media-slide" key={aspect.video} inert={selectedAspect !== index + 1}>
+                  <div className="vp-media-slide" data-active={selectedAspect === index + 1} key={aspect.video} inert={selectedAspect !== index + 1}>
                     <ViewportVideo src={`/videos/${aspect.video}.mp4`} poster={`${assetRoot}${aspect.video}-poster.webp`}
                       autoPlay={selectedAspect === index + 1} loop muted playsInline aria-label={aspect.label} />
                   </div>
                 ))}
               </div>
             </div>
-            <div className="vp-aspect-copy" id="vp-active-explanation">
+            <div className="vp-aspect-copy vp-aspect-copy-enter" key={selectedAspect} id="vp-active-explanation">
 
               <h3>{activeAspect.heading}</h3><p>{activeAspect.summary}</p>
               {activeAspect.points.length > 0 && <dl>{activeAspect.points.map(([title, copy]) => <div key={title}><dt>{title}</dt><dd>{copy}</dd></div>)}</dl>}

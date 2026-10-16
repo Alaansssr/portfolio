@@ -231,8 +231,6 @@ export default function ProjectArena() {
           </div>
         </div>
         <dl className="ar-meta">
-          <div><dt>Designed by</dt><dd>Alaa Suliman</dd></div>
-          <div><dt>Context</dt><dd>Design & Interaction, M.A.<br />Rhine-Waal University of Applied Sciences</dd></div>
           <div><dt>Focus</dt><dd>Experience design<br />Physical & digital interaction</dd></div>
           <div><dt>Year / outcome</dt><dd>Summer semester 2025<br />Concept & interaction prototype</dd></div>
         </dl>
