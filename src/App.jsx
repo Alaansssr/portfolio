@@ -1,4 +1,5 @@
 import { Suspense, lazy, useEffect, useState } from 'react'
+import { Analytics } from '@vercel/analytics/react'
 import Hero from './components/Hero'
 import About from './components/About'
 import './editorial.css'
@@ -31,34 +32,42 @@ export default function App() {
   const activeProject = projects[index]
   const ActiveProjectDetails = projectComponents[activeProject.Component]
 
-  if (page === 'about') return <About />
+  // Hash navigation is not picked up by automatic pathname tracking.
+  // Explicit routes disable automatic page views, avoiding duplicate events.
+  const analyticsPath = page === 'about' ? '/about' : '/'
+  const analytics = import.meta.env.PROD ? (
+    <Analytics route={analyticsPath} path={analyticsPath} mode="production" />
+  ) : null
 
   return (
-    <main style={{ width: '100%', minHeight: '100vh' }}>
-      <Hero
-        index={index}
-        setIndex={setIndex}
-      />
+    <>
+      {analytics}
+      {page === 'about' ? <About /> : <main style={{ width: '100%', minHeight: '100vh' }}>
+        <Hero
+          index={index}
+          setIndex={setIndex}
+        />
 
-      <section
-        id="project-content"
-        style={{
-          minHeight: '100vh',
-          padding: '1px 10%',
-          background: 'var(--case-bg)',
-          color: 'var(--case-ink)',
-        }}
-      >
-        <Suspense
-          fallback={
-            <div style={{ padding: '80px 0', color: 'var(--case-muted)' }}>
-              Loading project...
-            </div>
-          }
+        <section
+          id="project-content"
+          style={{
+            minHeight: '100vh',
+            padding: '1px 10%',
+            background: 'var(--case-bg)',
+            color: 'var(--case-ink)',
+          }}
         >
-          <ActiveProjectDetails />
-        </Suspense>
-      </section>
-    </main>
+          <Suspense
+            fallback={
+              <div style={{ padding: '80px 0', color: 'var(--case-muted)' }}>
+                Loading project...
+              </div>
+            }
+          >
+            <ActiveProjectDetails />
+          </Suspense>
+        </section>
+      </main>}
+    </>
   )
 }
