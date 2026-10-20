@@ -6,6 +6,13 @@ import PortfolioHeader from './PortfolioHeader'
 const HeroScene = lazy(() => import('./HeroScene'))
 
 export default function Hero({ index, setIndex }) {
+  const [scrolled, setScrolled] = useState(() => window.scrollY > 24)
+  useEffect(() => {
+    const update = () => setScrolled(window.scrollY > 24)
+    window.addEventListener('scroll', update, { passive: true })
+    update()
+    return () => window.removeEventListener('scroll', update)
+  }, [])
   const [compact, setCompact] = useState(() => window.matchMedia('(max-width: 900px)').matches)
   useEffect(() => {
     const query = window.matchMedia('(max-width: 900px)')
@@ -168,7 +175,7 @@ export default function Hero({ index, setIndex }) {
             fontWeight: 400,
           }}
         >
-          Scroll to explore <span className="hero-scroll-arrow" aria-hidden="true">↓</span>
+          <span aria-hidden={scrolled} style={{ opacity: scrolled ? 0 : 1, transition: 'opacity .25s ease' }}>Scroll to explore <span className="hero-scroll-arrow" aria-hidden="true">↓</span></span>
         </p>
       </div>
 

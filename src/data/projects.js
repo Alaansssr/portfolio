@@ -4,7 +4,7 @@ export const projects = [
     color: '#ff6b6b',
     title: 'VIBROFEST',
     tagline: 'Connecting strangers through touch.',
-    description: 'An experimental cooperative game exploring how two people can communicate and navigate together through haptic cues.',
+    description: 'An experimental asymmetrical cooperative game exploring how two people can communicate and navigate together through haptic cues.',
     Component: 'Project1',
   },
   {
