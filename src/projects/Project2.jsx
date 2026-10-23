@@ -201,7 +201,7 @@ function SectionHeading({ number, label, title, children }) {
   return <header className="ar-heading">
     <p className="ar-kicker">{number} / {label}</p>
     <h3>{title}</h3>
-    <p>{children}</p>
+    {children && <p>{children}</p>}
   </header>
 }
 
@@ -211,7 +211,6 @@ export default function ProjectArena() {
       <div className="ar-banner">
         <div className="ar-lines" aria-hidden="true" />
         <div className="ar-banner-shade" aria-hidden="true" />
-        <span>The ARENA</span>
       </div>
 
       <section className="ar-container ar-section" aria-labelledby="arena-title">
@@ -220,47 +219,44 @@ export default function ProjectArena() {
           <h2 id="arena-title">The Arena.</h2>
           <p>{project.tagline}</p>
         </div>
-        <p className="ar-opening-summary">{project.description}</p>
-        <p className="ar-disciplines">Experience Design · Interaction Design · UX Research · Prototyping · Spatial Interaction</p>
-        <div className="ar-intro">
-          <h3>The starting question</h3>
-          <div>
-            <p className="ar-lead">Can a museum become a social experience?</p>
-            <p>Visitors can explore the same exhibits without ever sharing what caught their attention. The Arena asks how those individual discoveries could become a reason to talk, compare ideas, and play together.</p>
-            <p>Developed as an academic concept for the Mercedes-Benz Museum, the experience begins with exploration and culminates in a team game in the restaurant. A proposed color-changing bracelet carries each visitor’s interests into the game, then becomes their controller.</p>
-          </div>
+        <div className="ar-overview-pitch">
+          <h3>Explore on your own.<br /><span className="ar-color-phrase"><span>Play</span>{' '}<span>to</span><span>get</span><span>her.</span></span></h3>
+          <p>A museum visit becomes a team game. A color-changing bracelet connects visitors through shared interests, then becomes their controller in a restaurant race.</p>
         </div>
-        <dl className="ar-meta">
-          <div><dt>Focus</dt><dd>Experience design<br />Physical & digital interaction</dd></div>
-          <div><dt>Year / outcome</dt><dd>Summer semester 2025<br />Concept & interaction prototype</dd></div>
+        <ol className="ar-concept-flow" aria-label="The concept in three steps">
+          <li><span className="ar-step-number">01</span><strong>Explore</strong><p>Your interests shape your bracelet’s color.</p></li>
+          <li><span className="ar-step-number">02</span><strong>Find your team</strong><p>Same color. Shared curiosity. New connections.</p></li>
+          <li><span className="ar-step-number">03</span><strong>Play together</strong><p>Discuss, vote, and race using the bracelet.</p></li>
+        </ol>
+        <dl className="ar-meta ar-overview-meta">
+          <div><dt>Context</dt><dd>Mercedes-Benz Museum<br />Academic concept · Summer 2025</dd></div>
+          <div><dt>Focus / outcome</dt><dd>Physical & digital experience design<br />Concept & interaction prototype</dd></div>
         </dl>
-        <div className="ar-summary">
-          <div><strong>Explore</strong><span>Follow your curiosity through the exhibits.</span></div>
-          <div><strong>Gather</strong><span>Meet others who noticed the same things.</span></div>
-          <div><strong>Play</strong><span>Turn what you discovered into a team experience.</span></div>
-        </div>
       </section>
 
       <ArenaInterests />
 
       <div className="case-band case-light ar-research-band">
       <section className="ar-container ar-section" aria-label="Why this idea">
-        <SectionHeading number="01" label="Why this idea?" title="Give visitors a reason to participate.">
-          The selected visitor reviews ask for more opportunities to do something, beyond reading and looking. I explored how a shared activity could extend that participation beyond the exhibits.
-        </SectionHeading>
-        <div className="ar-two ar-research">
-          <div><h4>Listening to visitors</h4><p>The reviews below repeatedly ask for more interactive experiences: hands-on exhibits, opportunities to explore cars, and more activity beyond reading and looking. These comments helped frame an opportunity for greater participation.</p></div>
-          <div><h4>Making room for a shared activity</h4><p>My response was to focus on the restaurant as a social extension of the visit. Visitors could pause, share what interested them, and take part in something together. The team game is my design response to that opportunity.</p></div>
+        <SectionHeading number="01" label="Why this idea?" title="From looking to taking part." />
+        <div className="ar-insight-response">
+          <div className="ar-insight">
+            <p className="ar-kicker">The visitor need</p>
+            <h4>More to do.<br />More to interact with.</h4>
+            <p>Selected reviews called for hands-on exhibits and more activity beyond reading and looking.</p>
+          </div>
+          <div className="ar-response">
+            <p className="ar-kicker">My design response</p>
+            <h4>Make participation<br />a shared experience.</h4>
+            <p>Turn the restaurant pause into a team game, built around what visitors discovered.</p>
+          </div>
         </div>
-        <div className="ar-evolution">
-          <h4>How the concept developed</h4>
-          <ol>
-            <li><span>Explore</span><p>Start with visitors’ curiosity about cars. Early app ideas supported learning, but feedback raised a new question: what would give people a reason to take part together?</p></li>
-            <li><span>Bring it on-site</span><p>Use the bracelet to make shared interests visible. Place the interaction within the museum journey, where visitors are already together.</p></li>
-            <li><span>Give people a shared goal</span><p>Make the bracelet the controller and the restaurant the arena. A team game creates a reason to talk and participate without a phone.</p></li>
-          </ol>
+        <div className="ar-design-shift">
+          <p className="ar-kicker">The key concept shift</p>
+          <div><span>Individual app exploration</span><span aria-hidden="true">→</span><strong>On-site play, powered by a bracelet.</strong></div>
+          <p>Concept feedback pushed the idea toward a shared goal that keeps attention on people and the museum.</p>
         </div>
-        <p className="ar-note">Selected museum reviews that informed the exploration. Scroll to move through the original reviews.</p>
+        <p className="ar-note">The reviews informed the opportunity; the social game is my proposed response. Scroll to explore the original reviews.</p>
       </section>
 
       <MuseumReviews />
