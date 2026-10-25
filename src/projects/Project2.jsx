@@ -8,12 +8,6 @@ const project = projects.find(item => item.Component === 'Project2')
 
 // Keep scroll updates inside the review stack, rather than rerendering the case study.
 function MuseumReviews() {
-  const containerStyle = {
-    maxWidth: 1100,
-    margin: '0 auto',
-    padding: '0 20px',
-  }
-
   const reviewsSectionRef = useRef(null)
   const [reviewProgress, setReviewProgress] = useState(0)
 
@@ -57,74 +51,46 @@ function MuseumReviews() {
     }
   }, [])
 
+  const placements = [
+    { x: 2, y: 3, angle: -5, mobileX: 2, mobileY: 1 },
+    { x: 35, y: 1, angle: 4, mobileX: 40, mobileY: 13 },
+    { x: 69, y: 8, angle: -3, mobileX: 1, mobileY: 25 },
+    { x: 18, y: 35, angle: 6, mobileX: 40, mobileY: 36 },
+    { x: 53, y: 30, angle: -4, mobileX: 2, mobileY: 43 },
+    { x: 1, y: 68, angle: 3, mobileX: 39, mobileY: 60 },
+    { x: 35, y: 63, angle: -6, mobileX: 1, mobileY: 70 },
+    { x: 71, y: 54, angle: 5, mobileX: 40, mobileY: 77 },
+  ]
+
   return (
-      <div
-        ref={reviewsSectionRef}
-        style={{
-          height: `${reviewImages.length * 70}vh`,
-          position: 'relative',
-          marginBottom: 140,
-        }}
-      >
-        <div
-          style={{
-            position: 'sticky',
-            top: 80,
-            height: '75vh',
-            ...containerStyle,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <div
-            style={{
-              position: 'relative',
-              width: '100%',
-              maxWidth: 900,
-              height: '60vh',
-            }}
-          >
-            {reviewImages.map((src, index) => {
-              const start = index / reviewImages.length
-              const end = (index + 1) / reviewImages.length
+    <div ref={reviewsSectionRef} className="ar-reviews-scroll">
+      <div className="ar-reviews-stage" aria-label="Museum visitor reviews">
+        {reviewImages.map((src, index) => {
+          const start = index / reviewImages.length
+          const localProgress = Math.min(Math.max((reviewProgress - start) * reviewImages.length, 0), 1)
+          const placement = placements[index]
 
-              const localProgress = Math.min(
-                Math.max((reviewProgress - start) / (end - start), 0),
-                1
-              )
-
-              const isVisible = reviewProgress >= start
-
-              return (
-                <img loading="lazy" decoding="async"
-                  key={src}
-                  src={src}
-                  alt={`Visitor review ${index + 1}`}
-                  style={{
-                    position: 'absolute',
-                    inset: 0,
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'contain',
-                    borderRadius: 24,
-                    background: 'white',
-                    boxShadow: '0 30px 80px rgba(0,0,0,0.18)',
-                    zIndex: index + 1,
-                    opacity: isVisible ? 1 : 0,
-                    transform: isVisible
-                      ? `translateY(${(1 - localProgress) * 50}px) scale(${
-                          0.95 + localProgress * 0.05
-                        })`
-                      : 'translateY(90px) scale(0.95)',
-                    transition: 'opacity 0.25s ease, transform 0.25s ease',
-                  }}
-                />
-              )
-            })}
-          </div>
-        </div>
+          return (
+            <img loading="lazy" decoding="async"
+              key={src}
+              src={src}
+              alt={`Visitor review ${index + 1}`}
+              className="ar-review-card"
+              style={{
+                '--review-x': `${placement.x}%`,
+                '--review-y': `${placement.y}%`,
+                '--review-mobile-x': `${placement.mobileX}%`,
+                '--review-mobile-y': `${placement.mobileY}%`,
+                '--review-angle': `${placement.angle}deg`,
+                zIndex: index + 1,
+                opacity: reviewProgress >= start ? 1 : 0,
+                transform: `translateY(${(1 - localProgress) * 70}px) rotate(${placement.angle}deg) scale(${0.95 + localProgress * 0.05})`,
+              }}
+            />
+          )
+        })}
       </div>
+    </div>
   )
 }
 
@@ -142,8 +108,8 @@ const imageSizes = {
     "height": 800
   },
   "screens": {
-    "width": 1544,
-    "height": 994
+    "width": 1600,
+    "height": 1067
   },
   "journey1": {
     "width": 1986,
@@ -199,8 +165,8 @@ function JourneySymbol({ stage }) {
 
 function SectionHeading({ number, label, title, children }) {
   return <header className="ar-heading">
-    <p className="ar-kicker">{number} / {label}</p>
-    <h3>{title}</h3>
+    <h3 className="ar-section-title"><span>{number}</span>{label}</h3>
+    {title && <p className="ar-section-intro">{title}</p>}
     {children && <p>{children}</p>}
   </header>
 }
@@ -238,7 +204,7 @@ export default function ProjectArena() {
 
       <div className="case-band case-light ar-research-band">
       <section className="ar-container ar-section" aria-label="Why this idea">
-        <SectionHeading number="01" label="Why this idea?" title="From looking to taking part." />
+        <SectionHeading number="01" label="Why this idea?" />
         <div className="ar-insight-response">
           <div className="ar-insight">
             <p className="ar-kicker">The visitor need</p>
@@ -263,13 +229,13 @@ export default function ProjectArena() {
       </div>
 
       <section className="ar-container ar-section" aria-label="Technologies and tools">
-        <SectionHeading number="02" label="Technologies & tools" title="One bracelet. Two roles.">
+        <SectionHeading number="02" label="Technologies & tools">
           During the visit, the bracelet expresses an interest. During the game, it becomes an input device. The proposed system links that personal object to the museum space and a shared screen.
         </SectionHeading>
         <div className="ar-three ar-tools">
           <figure><ArenaImage name="bracelet" alt="Transparent bracelet concept with illuminated color and four A–D buttons" sizes="(max-width: 800px) 80vw, 350px" /><figcaption><h4>Smart bracelet</h4><p>A color indicator gives visitors a visible team identity. Four tactile buttons — A, B, C, and D — let them vote for answers while keeping their attention on the people and game around them.</p></figcaption></figure>
           <figure><ArenaImage name="beacon" alt="Illustration of a Bluetooth beacon in a museum" sizes="(max-width: 800px) 80vw, 350px" /><figcaption><h4>Bluetooth beacons</h4><p>Beacons placed around the exhibits would detect proximity and time spent in each zone. The concept uses dwell time as a signal of interest to determine the bracelet’s color.</p></figcaption></figure>
-          <figure><ArenaImage name="screens" alt="Concept visualization of restaurant visitors playing together with colored bracelets and a shared screen" sizes="(max-width: 800px) 80vw, 350px" /><figcaption><h4>Restaurant screens</h4><p>A shared display presents questions, answer options, and the race. Each team’s car uses its bracelet color, turning individual votes into progress everyone can follow.</p></figcaption></figure>
+          <figure><ArenaImage name="screens" alt="Four friends enjoying a restaurant game together, wearing red, blue, green, and yellow wristbands beneath a shared racing game screen" sizes="(max-width: 800px) 80vw, 350px" /><figcaption><h4>Restaurant screens</h4><p>A shared display presents questions, answer options, and the race. Each team’s car uses its bracelet color, turning individual votes into progress everyone can follow.</p></figcaption></figure>
         </div>
 
       </section>
@@ -316,7 +282,7 @@ export default function ProjectArena() {
       </section>
 
       <section className="ar-container ar-section" aria-label="Prototype">
-        <SectionHeading number="04" label="Prototype" title="A reason to talk. A race to share.">
+        <SectionHeading number="04" label="Prototype">
           The prototype shows how trivia, team decisions, and race feedback come together. Each visitor submits an answer with the bracelet; the team’s majority vote becomes its answer, giving players a reason to discuss before choosing.
         </SectionHeading>
         <figure className="ar-video">

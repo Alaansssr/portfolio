@@ -1,4 +1,3 @@
-.arena-interests { border-top: 1px solid var(--ar-rule); }
 .ai-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 24px; align-items: start; }
 .ai-card { min-width: 0; width: 100%; padding: 0; border: 0; background: transparent; color: var(--ar-ink); font: inherit; text-align: left; cursor: default; transition: opacity .35s ease; }
 .ai-card:focus-visible { outline: 2px solid var(--case-focus); outline-offset: 8px; border-radius: 10px; }

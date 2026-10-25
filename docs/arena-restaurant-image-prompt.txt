@@ -1,0 +1,7 @@
+Tool: built-in imagegen
+Edit target: public/images/screens.jpg (previous restaurant scene)
+Supporting input: user-supplied oval race track screenshot
+Outputs: public/images/screens.jpg, public/images/arena/screens-1600.webp, public/images/arena/screens-640.webp
+
+Final prompt:
+Use case: compositing. Image 1 is the EDIT TARGET: restaurant photo of four friends with red blue green yellow wristbands. Image 2 is the EXACT CONTENT TO INSERT on the wall-mounted television behind them. Change ONLY the pixels inside the television display in Image 1: replace the existing colorful 3D racing and quiz graphics completely with the supplied Image 2, the flat top-down oval dark-gray race track on a black background with dashed white road centerline, red and white curbs, checkerboard finish line at bottom, and four tiny red green yellow blue cars. Faithfully reproduce this supplied race design rather than inventing a new game. Fit the full oval track inside the existing display preserving its proportions with black padding as necessary. Remove the source screenshot's thin white left border and bottom video control icons; these are not part of the race. Match the television perspective and subtle natural display appearance. Preserve the TV frame, exact overall photo composition and 3:2 landscape aspect ratio, all four people, faces, poses, hands, red blue green yellow bracelets, food, table, restaurant background and lighting unchanged. No quiz, no questions, no 3D racing, no new text.
