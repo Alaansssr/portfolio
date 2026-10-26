@@ -6,12 +6,32 @@ import PortfolioHeader from './PortfolioHeader'
 const HeroScene = lazy(() => import('./HeroScene'))
 
 export default function Hero({ index, setIndex }) {
+  const heroRef = useRef(null)
   const [scrolled, setScrolled] = useState(() => window.scrollY > 24)
   useEffect(() => {
-    const update = () => setScrolled(window.scrollY > 24)
-    window.addEventListener('scroll', update, { passive: true })
+    let frame = 0
+    const update = () => {
+      frame = 0
+      setScrolled(window.scrollY > 24)
+      const hero = heroRef.current
+      if (!hero) return
+      const bounds = hero.getBoundingClientRect()
+      const distance = Math.max(1, Math.min(bounds.height * .55, window.innerHeight * .65))
+      const progress = Math.min(1, Math.max(0, -bounds.top / distance))
+      hero.style.setProperty('--hero-intro-opacity', String(1 - progress))
+      hero.style.setProperty('--hero-intro-scale', String(1 - progress * .2))
+    }
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update)
+    }
+    window.addEventListener('scroll', schedule, { passive: true })
+    window.addEventListener('resize', schedule)
     update()
-    return () => window.removeEventListener('scroll', update)
+    return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', schedule)
+      window.removeEventListener('resize', schedule)
+    }
   }, [])
   const [compact, setCompact] = useState(() => window.matchMedia('(max-width: 900px)').matches)
   useEffect(() => {
@@ -22,7 +42,6 @@ export default function Hero({ index, setIndex }) {
   }, [])
   const [sceneReady, setSceneReady] = useState(false)
   const handleSceneReady = useCallback(() => setSceneReady(true), [])
-  const heroRef = useRef(null)
   const [visible, setVisible] = useState(true)
   const [displayIndex, setDisplayIndex] = useState(index)
   const activeProject = projects[displayIndex]
@@ -106,6 +125,12 @@ export default function Hero({ index, setIndex }) {
         }}
       >
         <h1
+          className="hero-name"
+          onPointerMove={event => {
+            const bounds = event.currentTarget.getBoundingClientRect()
+            event.currentTarget.style.setProperty('--name-pointer-x', `${event.clientX - bounds.left}px`)
+            event.currentTarget.style.setProperty('--name-pointer-y', `${event.clientY - bounds.top}px`)
+          }}
           style={{
             fontSize: 'clamp(36px, 5vw, 72px)',
             lineHeight: 1,
@@ -117,6 +142,7 @@ export default function Hero({ index, setIndex }) {
           Alaa{' '}
           <br />
           Suliman
+          <span className="hero-name-photo" aria-hidden="true">Alaa{' '}<br />Suliman</span>
         </h1>
 
         <p
@@ -136,6 +162,30 @@ export default function Hero({ index, setIndex }) {
       </div>
 
 
+
+      <div className="hero-location">
+        <span>Located in<br /><span className="hero-location-country">Germany</span></span>
+        <span className="hero-location-globe" aria-hidden="true">
+          <svg className="hero-earth-icon" viewBox="0 0 64 64" fill="none">
+            <title>Earth centered on Europe, with Germany marked in yellow</title>
+            <circle cx="32" cy="32" r="27" fill="#303e48" stroke="#f5f5f2" strokeWidth="1.2" />
+            <g fill="#c8d2bc" stroke="#c8d2bc" strokeWidth=".65" strokeLinejoin="round">
+              <path d="M27 6l-3 5-4 2-2 5 4 2 4-2 3 2 3-2 2-5 5-3-3-4z" />
+              <path d="M30 19l-4 2-2 4-5 2 1 3 6-1 3 3 6-1 4 3 6-1 2-4 6 1 4 4 1-7-4-6-7-5-8-2-4 3-1 5z" />
+              <path d="M26 31l-6 3-3 7 3 5 6 1 3 8 4 1 5-8 2-8-5-6z" />
+              <path d="M40 35l5 1 2 4-3 4-3-3zM40 49l-2 6 2 1 2-5z" />
+              <path d="M7 24l4-6 4 1-1 5-4 3zM12 36l3 2 2 7-3-2z" />
+              <path d="M20 22l1-3 2 1-1 3zM35 27l2 2-1 3-2-3z" />
+            </g>
+            <g stroke="#f5f5f2" strokeWidth=".65" opacity=".22">
+              <ellipse cx="32" cy="32" rx="13" ry="27" />
+              <path d="M5 32h54M9 18h46M9 46h46" />
+            </g>
+            <circle className="hero-earth-location-halo" cx="29" cy="24" r="5" fill="#ffb21c" opacity=".25" />
+            <circle cx="29" cy="24" r="2.4" fill="#ffb21c" stroke="#fff" strokeWidth=".9" />
+          </svg>
+        </span>
+      </div>
 
       <div
         className="hero-project"

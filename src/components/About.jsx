@@ -1,12 +1,41 @@
+import { useEffect, useRef } from 'react'
 import PortfolioHeader from './PortfolioHeader'
 import './Hero.css'
 
 export default function About() {
+  const portraitRef = useRef(null)
+
+  useEffect(() => {
+    let frame = 0
+    const update = () => {
+      frame = 0
+      const portrait = portraitRef.current
+      if (!portrait) return
+      const progress = Math.min(1, Math.max(0, window.scrollY / Math.max(1, window.innerHeight * .65)))
+      portrait.style.setProperty('--portrait-opacity', String(1 - progress))
+      portrait.style.setProperty('--portrait-scale', String(1 - progress * .2))
+    }
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update)
+    }
+    window.addEventListener('scroll', schedule, { passive: true })
+    window.addEventListener('resize', schedule)
+    update()
+    return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', schedule)
+      window.removeEventListener('resize', schedule)
+    }
+  }, [])
+
   return (
     <main className="about-page">
       <PortfolioHeader page="about" />
       <article className="about-content" aria-labelledby="about-title">
         <h1 id="about-title">About</h1>
+        <figure ref={portraitRef} className="about-portrait">
+          <img src="/images/about-portrait.webp" alt="Alaa Suliman seated against a warm yellow wall" width="1200" height="1600" decoding="async" />
+        </figure>
         <p>I’m a spatial and interaction designer based in Germany. My work explores the relationship between people, space, technology, and experience, with a particular interest in immersive environments, interactive systems, and new forms of digital-physical interaction.</p>
         <p>My background in architecture shapes the way I think about space, movement, scale, and human behavior, while my current practice expands into interaction design, creative technology, and experience design.</p>
         <p>I’m especially interested in how emerging technologies, including AI, can influence the way we design, navigate, and interact with physical and digital environments. I see technology not just as a tool, but as a material that can shape behavior, atmosphere, and experience.</p>
